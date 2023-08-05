@@ -1,9 +1,12 @@
-package org.Model;
+package org.Controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.*;
+import java.util.Scanner;
 
 public class JdbcSqlServerConnection {
-    private static Connection conn;
+    protected static Connection conn;
     public static void connectToServer() {
         String dbURL = "jdbc:mysql://localhost:3306/assignment2";
         String username="root";
@@ -24,19 +27,21 @@ public class JdbcSqlServerConnection {
         }
     }
 
-    public static User getUser(int userId) {
-        User user = null;
+    public static void initDatabase() {
         try {
-            Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM user WHERE userId = " + userId);
-            while (resultSet.next()) {
-                user = new User(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
-                        resultSet.getString(4), resultSet.getInt(5));
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            Scanner sc = new Scanner(new File("./src/main/java/org/Controller/InitDB.sql"));
+            sc.useDelimiter("@@@");
+            String str = "";
+            while (sc.hasNext()) {
+                str = sc.next();
+                Statement statement = conn.createStatement();
+                statement.executeUpdate(str);
+            };
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
         }
-        return user;
     }
 
     public static void closeConnection() {
