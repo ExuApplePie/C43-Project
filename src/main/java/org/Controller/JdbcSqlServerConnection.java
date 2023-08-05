@@ -10,7 +10,7 @@ public class JdbcSqlServerConnection {
     public static void connectToServer() {
         String dbURL = "jdbc:mysql://localhost:3306/assignment2";
         String username="root";
-        String password="Str33tFighter6";
+        String password="";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
             conn = DriverManager.getConnection(dbURL, username, password);

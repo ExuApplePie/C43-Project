@@ -1,10 +1,8 @@
 package org.Controller;
 
 import org.Model.User;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
+import java.sql.*;
 
 
 // Crud operations for user table
@@ -30,6 +28,8 @@ public class UserController {
             Statement statement = conn.createStatement();
             statement.executeUpdate("INSERT INTO user VALUES (" + user.getUserId() + ", '" + user.getOccupation() + "', '" +
                     user.getAddress() + "', '" + user.getDOB() + "', " + user.getSIN() + ")");
+        } catch(SQLIntegrityConstraintViolationException e) {
+            System.out.println("User with userId already exists");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
