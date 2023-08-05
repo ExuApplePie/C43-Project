@@ -14,6 +14,17 @@ public class User {
         this.SIN = SIN;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", occupation='" + occupation + '\'' +
+                ", address='" + address + '\'' +
+                ", DOB='" + DOB + '\'' +
+                ", SIN=" + SIN +
+                '}';
+    }
+
     public int getUserId() {
         return userId;
     }

@@ -6,5 +6,8 @@ import org.Model.JdbcSqlServerConnection;
 public class Main {
     public static void main(String[] args) {
         JdbcSqlServerConnection.connectToServer();
+        String str = JdbcSqlServerConnection.getUser(1).toString();
+        System.out.println(str);
+        JdbcSqlServerConnection.closeConnection();
     }
 }
