@@ -23,21 +23,18 @@ public class Main {
 		System.out.println("-------------------");
 
 		while (true) {
-			System.out.println("Please select an option, "+user.getName());
+			System.out.println("Please select an option, " + user.getName());
 			System.out.println("(1) Rent\n(2) Host\n(3) Rate\n(4) Exit");
 			int choice = scanner.nextInt();
 
 			if (choice == 1) {
 				Main.rent(user, scanner);
 				break;
-			}
-			else if (choice == 2) {
+			} else if (choice == 2) {
 				break;
-			}
-			else if (choice == 3) {
+			} else if (choice == 3) {
 				break;
-			}
-			else if (choice == 4) {
+			} else if (choice == 4) {
 				System.out.println("Thank you for using WindNbN.");
 				System.out.println("Exiting...");
 				break;
@@ -78,8 +75,7 @@ public class Main {
 				}
 
 				continue;
-			}
-			else if (choice == 2) {
+			} else if (choice == 2) {
 				System.out.println("Please enter a city: ");
 				String city = scanner.next();
 				System.out.println("Listings:\n--------");
@@ -96,8 +92,7 @@ public class Main {
 					//Insert new booking here
 				}
 				continue;
-			}
-			else if (choice == 3) {
+			} else if (choice == 3) {
 				System.out.println("Please enter a country: ");
 				String country = scanner.next();
 				System.out.println("Listings:\n--------");
@@ -114,8 +109,7 @@ public class Main {
 					//Insert new booking here
 				}
 				continue;
-			}
-			else if (choice == 4) {
+			} else if (choice == 4) {
 				System.out.println("Please enter a postal code: ");
 				String postalCode = scanner.next();
 				System.out.println("Listings:\n--------");
@@ -132,8 +126,7 @@ public class Main {
 					//Insert new booking here
 				}
 				continue;
-			}
-			else if (choice == 5) {
+			} else if (choice == 5) {
 				System.out.println("Returning to menu...");
 				break;
 			} else {
@@ -188,3 +181,4 @@ public class Main {
 			}
 		}
 	}
+}
