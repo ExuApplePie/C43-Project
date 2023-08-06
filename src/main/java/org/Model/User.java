@@ -1,16 +1,19 @@
 package org.Model;
 
+import java.text.SimpleDateFormat;
+
 public class User {
     private int userId;
     private String occupation;
     private String address;
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private String DOB;
     private int SIN;
     public User(int userId, String occupation, String address, String DOB, int SIN) {
         this.userId = userId;
         this.occupation = occupation;
         this.address = address;
-        this.DOB = DOB;
+        this.DOB = simpleDateFormat.format(DOB);
         this.SIN = SIN;
     }
 
@@ -27,10 +30,6 @@ public class User {
 
     public int getUserId() {
         return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public String getOccupation() {
@@ -54,7 +53,7 @@ public class User {
     }
 
     public void setDOB(String DOB) {
-        this.DOB = DOB;
+        this.DOB = simpleDateFormat.format(DOB);
     }
 
     public int getSIN() {
