@@ -21,16 +21,16 @@ public class UserController {
                         resultSet.getString(4), resultSet.getInt(5), resultSet.getString(6));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return null;
         }
         return user;
     }
 
     public static void addUser(User user) {
-        try {
+    	try {
             Statement statement = conn.createStatement(); // ignore might also be suppressing other errors so be careful
             statement.executeUpdate("INSERT IGNORE INTO user VALUES (" + "NULL, '" + user.getOccupation() + "', '" +
-                    user.getAddress() + "', '" + user.getDOB() + "', " + user.getSIN() + "', '" + user.getName() + ")", Statement.RETURN_GENERATED_KEYS);
+                    user.getAddress() + "', '" + user.getDOB() + "', " + user.getSIN() + ", '" + user.getName() + "')", Statement.RETURN_GENERATED_KEYS);
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 user.setUserId(resultSet.getInt(1));
