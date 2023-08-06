@@ -49,4 +49,15 @@ public class Rating {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+    @Override
+    public String toString() {
+        return "Rating{" +
+                "renterId=" + renterId +
+                ", hostId=" + hostId +
+                ", score=" + score +
+                ", date='" + date + '\'' +
+                ", comment='" + comment + '\'' +
+                '}';
+    }
 }

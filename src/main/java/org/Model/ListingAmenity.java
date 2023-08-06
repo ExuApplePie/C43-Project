@@ -26,4 +26,13 @@ public class ListingAmenity {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    @Override
+    public String toString() {
+        return "ListingAmenity{" +
+                "listingId=" + listingId +
+                ", amenityId=" + amenityId +
+                ", quantity=" + quantity +
+                '}';
+    }
 }

@@ -76,4 +76,18 @@ public class Listing {
     public void setCity(String city) {
         this.city = city;
     }
+
+    @Override
+    public String toString() {
+        return "Listing{" +
+                "listingId=" + listingId +
+                ", hostId=" + hostId +
+                ", type='" + type + '\'' +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                ", postalCode='" + postalCode + '\'' +
+                ", country='" + country + '\'' +
+                ", city='" + city + '\'' +
+                '}';
+    }
 }

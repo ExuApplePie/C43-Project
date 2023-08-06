@@ -37,6 +37,7 @@ public class JdbcSqlServerConnection {
                 Statement statement = conn.createStatement();
                 statement.executeUpdate(str);
             };
+            sc.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (FileNotFoundException e) {

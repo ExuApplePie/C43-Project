@@ -65,4 +65,17 @@ public class Booking {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "bookingId=" + bookingId +
+                ", listingId=" + listingId +
+                ", guestId=" + guestId +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", score=" + score +
+                ", comment='" + comment + '\'' +
+                '}';
+    }
 }
