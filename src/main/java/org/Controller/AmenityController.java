@@ -25,7 +25,11 @@ public class AmenityController {
 
     public static void addAmenity(Amenity amenity) {
         try {
-            conn.createStatement().executeUpdate("INSERT IGNORE INTO amenity VALUES (" + "NULL, '" + amenity.getName() + "')");
+            conn.createStatement().executeUpdate("INSERT IGNORE INTO amenity VALUES (" + "NULL, '" + amenity.getName() + "')", Statement.RETURN_GENERATED_KEYS);
+            ResultSet resultSet = conn.createStatement().getGeneratedKeys();
+            if (resultSet.next()) {
+                amenity.setAmenityId(resultSet.getInt(1));
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

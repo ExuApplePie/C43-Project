@@ -1,17 +1,16 @@
 package org.Model;
 
-import java.text.SimpleDateFormat;
+import static org.Model.DateParser.formatDate;
 
 public class Availability {
     private int listingId;
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private String date;
     private boolean available;
     private int price;
 
     public Availability(int listingId, String date, boolean available, int price) {
         this.listingId = listingId;
-        this.date = simpleDateFormat.format(date);
+        this.date = formatDate(date);
         this.available = available;
         this.price = price;
     }

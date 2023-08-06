@@ -2,19 +2,20 @@ package org.Model;
 
 import java.text.SimpleDateFormat;
 
+import static org.Model.DateParser.formatDate;
+
 public class Rating {
     private int renterId;
     private int hostId;
     private int score;
     private String date;
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private String comment;
 
     public Rating(int renterId, int hostId, int score, String date, String comment) {
         this.renterId = renterId;
         this.hostId = hostId;
         this.score = score;
-        this.date = simpleDateFormat.format(date);
+        this.date = formatDate(date);
         this.comment = comment;
     }
 
@@ -39,7 +40,7 @@ public class Rating {
     }
 
     public void setDate(String date) {
-        this.date = simpleDateFormat.format(date);
+        this.date = formatDate(date);
     }
 
     public String getComment() {

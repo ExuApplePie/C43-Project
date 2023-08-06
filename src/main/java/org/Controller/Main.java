@@ -19,7 +19,8 @@ public class Main {
             System.out.println("Invalid input, please try again");
             choice = scanner.nextInt();
         }
-
+        UserController.addUser(new User(1, "student", "1234", "1999-01-01", 123456789));
+        System.out.println(UserController.getUser(1));
         JdbcSqlServerConnection.closeConnection();
     }
 }

@@ -2,11 +2,12 @@ package org.Model;
 
 import java.text.SimpleDateFormat;
 
+import static org.Model.DateParser.formatDate;
+
 public class Booking {
     private int bookingId;
     private int listingId;
     private int guestId;
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private String startDate;
     private String endDate;
     private int score;
@@ -16,14 +17,18 @@ public class Booking {
         this.bookingId = bookingId;
         this.listingId = listingId;
         this.guestId = guestId;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startDate = formatDate(startDate);
+        this.endDate = formatDate(startDate);
         this.score = score;
         this.comment = comment;
     }
 
     public int getBookingId() {
         return bookingId;
+    }
+
+    public void setBookingId(int bookingId) {
+        this.bookingId = bookingId;
     }
 
     public int getListingId() {
@@ -39,7 +44,7 @@ public class Booking {
     }
 
     public void setStartDate(String startDate) {
-        this.startDate = startDate;
+        this.startDate = formatDate(startDate);
     }
 
     public String getEndDate() {
@@ -47,7 +52,7 @@ public class Booking {
     }
 
     public void setEndDate(String endDate) {
-        this.endDate = endDate;
+        this.endDate = formatDate(endDate);
     }
 
     public int getScore() {

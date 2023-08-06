@@ -25,6 +25,10 @@ public class Listing {
         return listingId;
     }
 
+    public void setListingId(int listingId) {
+        this.listingId = listingId;
+    }
+
     public int getHostId() {
         return hostId;
     }

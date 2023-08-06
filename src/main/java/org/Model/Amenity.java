@@ -13,6 +13,10 @@ public class Amenity {
         return amenityId;
     }
 
+    public void setAmenityId(int amenityId) {
+        this.amenityId = amenityId;
+    }
+
     public String getName() {
         return name;
     }

@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `address` varchar(90) NOT NULL,
   `DOB` date NOT NULL,
   `SIN` int NOT NULL,
+  `name` varchar(45) NOT NULL,
   PRIMARY KEY (`userId`),
   UNIQUE KEY `SIN_UNIQUE` (`SIN`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -52,7 +53,6 @@ CREATE TABLE IF NOT EXISTS `booking` (
   CONSTRAINT `bookingLID` FOREIGN KEY (`listingId`) REFERENCES `listing` (`listingId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 @@@
-
 CREATE TABLE IF NOT EXISTS `listingamenity` (
   `listingId` int NOT NULL,
   `amenityId` int NOT NULL,
