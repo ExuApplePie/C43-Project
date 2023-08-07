@@ -35,7 +35,7 @@ public class DatesController {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM dates WHERE listingId = " + listingId);
             while (resultSet.next()) {
-                dates = (new Dates(resultSet.getInt(1), resultSet.getString(2), resultSet.getBoolean(3), resultSet.getInt(4), resultSet.getInt(5), resultSet.getString(6), resultSet.getFloat(7), resultSet.getFloat(8), resultSet.getString(9), resultSet.getString(10), resultSet.getString(11), resultSet.getInt(12), resultSet.getString(13), resultSet.getInt(14)));
+                dates = (new Dates(resultSet.getInt(1), resultSet.getString(2), resultSet.getBoolean(3), resultSet.getInt(4), resultSet.getInt(5), resultSet.getString(6), resultSet.getFloat(7), resultSet.getFloat(8), resultSet.getString(9), resultSet.getString(10), resultSet.getString(11), resultSet.getString(12), resultSet.getInt(13), resultSet.getString(14), resultSet.getInt(15)));
             }
             return dates;
         } catch (SQLException e) {
