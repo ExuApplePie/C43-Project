@@ -15,7 +15,7 @@ public class BookingController {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM booking WHERE bookingId = " + bookingId);
             while (resultSet.next()) {
-                booking = new Booking(resultSet.getInt(1), resultSet.getInt(2), resultSet.getInt(3), resultSet.getString(4), resultSet.getString(5), resultSet.getInt(6), resultSet.getString(7));
+                booking = new Booking(resultSet.getInt(1), resultSet.getInt(2), resultSet.getInt(3), resultSet.getString(4), resultSet.getString(5), resultSet.getInt(6), resultSet.getString(7), resultSet.getString(8));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -26,7 +26,7 @@ public class BookingController {
     public static void addBooking(Booking booking) {
         try {
             Statement statement = conn.createStatement();
-            statement.executeUpdate("INSERT IGNORE INTO booking VALUES (" + "NULL, " + booking.getListingId() + ", " + booking.getGuestId() + ", '" + booking.getStartDate() + "', '" + booking.getEndDate() + "', " + booking.getScore() + ", '" + booking.getComment() + "')", Statement.RETURN_GENERATED_KEYS);
+            statement.executeUpdate("INSERT IGNORE INTO booking VALUES (" + "NULL, " + booking.getListingId() + ", " + booking.getGuestId() + ", '" + booking.getStartDate() + "', '" + booking.getEndDate() + "', " + booking.getScore() + ", '" + booking.getComment() + "', '" + booking.getCreditCardNumber() + "')", Statement.RETURN_GENERATED_KEYS);
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 booking.setBookingId(resultSet.getInt(1));
@@ -46,7 +46,7 @@ public class BookingController {
 
     public static void editBooking(Booking booking) {
         try {
-            conn.createStatement().executeUpdate("UPDATE booking SET startDate = " + booking.getStartDate() + "', endDate = '" + booking.getEndDate() + "', score = " + booking.getScore() + ", comment = '" + booking.getComment() + "' WHERE bookingId = " + booking.getBookingId());
+            conn.createStatement().executeUpdate("UPDATE booking SET startDate = " + booking.getStartDate() + "', endDate = '" + booking.getEndDate() + "', score = " + booking.getScore() + ", comment = '" + booking.getComment() + ", creditcard = '" + booking.getCreditCardNumber() + "' WHERE bookingId = " + booking.getBookingId());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
