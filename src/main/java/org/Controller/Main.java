@@ -64,16 +64,33 @@ public class Main {
         	} else if (choice == 2) {
         		Main.deleteListing(user, scanner);
         	} else if (choice == 3) {
-        		
+        		Main.editListing(user, scanner);
         	} else if (choice == 4) {
         		System.out.println("Returning to menu...");
         		break;
         	}
     	} 
     }
+
+	public static void deleteListing(User user, Scanner scanner) {
+		System.out.println("------Delete Listing-------");
+    	System.out.println("Please enter the listingId:");
+		int listingId = scanner.nextInt();
+		Listing listing = ListingController.getListing(listingId);
+		if (listing == null) {
+			System.out.println("Error: Could not find listing with that listingId.");
+			return;
+		}
+		if (listing.getHostId() != user.getUserId()) {
+			System.out.println("Error: You are not the host of this listing.");
+			return;
+		}
+		ListingController.deleteListing(listingId);
+		System.out.println("Successfully deleted listing.");
+	}
     
-    public static void deleteListing(User user, Scanner scanner) {
-    	System.out.println("------Delete Listing-------");
+    public static void editListing(User user, Scanner scanner) {
+    	System.out.println("------Edit Listing-------");
     	System.out.println("Please enter the listingId:");
 		int listingId = scanner.nextInt();
 		Listing listing = ListingController.getListing(listingId);
@@ -98,7 +115,9 @@ public class Main {
 		String country = scanner.next();
 		System.out.println("Please enter the city of the listing:");
 		String city = scanner.next();
-		Listing newListing = new Listing(0, user.getUserId(), type, longitude, latitude, postalCode, country, city);
+		System.out.println("Please enter the address of the listing:");
+		String address = scanner.next();
+		Listing newListing = new Listing(0, user.getUserId(), type, longitude, latitude, postalCode, country, city, address);
 		ListingController.editListing(newListing);
 		System.out.println("Successfully updated listing!");
     }
@@ -113,18 +132,19 @@ public class Main {
 		float latitude = scanner.nextFloat();
 		System.out.println("Please enter the postal code of the listing:");
 		String postalCode = scanner.next();
-		System.out.println("Please enter the country of the listing:");
+		System.out.println("Please enter the country of the listing (enter '_' instead of spaces):");
 		String country = scanner.next();
-		System.out.println("Please enter the city of the listing:");
+		System.out.println("Please enter the city of the listing (enter '_' instead of spaces):");
 		String city = scanner.next();
-		Listing listing = new Listing(0, user.getUserId(), type, longitude, latitude, postalCode, country, city);
+		System.out.println("Please enter the address of the listing (enter '_' instead of spaces):");
+		String address = scanner.next();
+		Listing listing = new Listing(0, user.getUserId(), type, longitude, latitude, postalCode, country, city, address);
 		ListingController.addListing(listing);
 		
-		String amenityName = "";
-		while (amenityName != "exit") {
-			System.out.println("Please an amenity in the building, or enter \"exit\" to stop:");
-			amenityName = scanner.next();
-			if (amenityName == "exit") {
+		while (true) {
+			System.out.println("Please enter an amenity in the building, or enter \"exit\" to stop (enter '_' instead of spaces):");
+			String amenityName = scanner.next();
+			if (amenityName.equals("exit")) {
 				break;
 			}
 			System.out.println("Please enter the quantity:");
