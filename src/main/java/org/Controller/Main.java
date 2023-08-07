@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 import org.Model.DateParser;
 import static org.Model.DateParser.formatDate;
+import java.util.Calendar;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
@@ -160,6 +164,32 @@ public class Main {
 			ListingAmenityController.addListingAmenity(listingAmenity);
 			System.out.println("Successfully added " + quantity + " of " + amenityName +".");
 		}
+		System.out.println("Please enter a start date for your listing (in YYYY-MM-DD format):");
+		String startDate = scanner.next();
+		System.out.println("Please enter an end date for your listing (in YYYY-MM-DD format):");
+		String endDate = scanner.next();
+		System.out.println("Please enter a price for your listing (per day, in $):");
+		int price = scanner.nextInt();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			Date startDate2 = sdf.parse(startDate);
+	        Date endDate2 = sdf.parse(endDate);
+	        
+	        Calendar calendar = Calendar.getInstance();
+	        calendar.setTime(startDate2);
+	        
+	        while (!calendar.getTime().after(endDate2)) {
+	            String currentDateStr = sdf.format(calendar.getTime());
+	            //System.out.println(currentDateStr);
+	            String currentDate = formatDate(currentDateStr);
+	            Availability availability = new Availability(listing.getListingId(), currentDate, true, price);
+	            AvailabilityController.addAvailability(availability);
+	            calendar.add(Calendar.DAY_OF_MONTH, 1);
+	        }
+		} catch (ParseException e) {
+            e.printStackTrace();
+        }
 		
 		System.out.println("Successfully created a new listing! The listingId is: " + listing.getListingId());
     }
@@ -231,7 +261,9 @@ public class Main {
 				
         		while (true) {
 	        		System.out.println("Listings:\n--------");
-	        		System.out.println(searchListings);
+	        		for (int i = 0 ; i < searchListings.size(); i++) {
+	        			System.out.println(searchListings.get(i).toString());
+	        		}
 	        		System.out.println("--------");
 	        		System.out.println("Please enter the listingId that you would like to rent, or '0' to exit:");
 	        		int listingId = scanner.nextInt();
@@ -249,7 +281,30 @@ public class Main {
 	        				String bookingStartDate = scanner.next();
 	        				System.out.println("Please enter an end date for your booking:");
 	        				String bookingEndDate = scanner.next();
-	        				//Check availability
+	        				
+	        				// Check availability
+	        				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	        				try {
+	        					Date startDate2 = sdf.parse(startDate);
+	        			        Date endDate2 = sdf.parse(endDate);
+	        			        
+	        			        Calendar calendar = Calendar.getInstance();
+	        			        calendar.setTime(startDate2);
+	        			        
+	        			        while (!calendar.getTime().after(endDate2)) {
+	        			            String currentDateStr = sdf.format(calendar.getTime());
+	        			            String currentDate = formatDate(currentDateStr);
+	        			            Availability availability = AvailabilityController.getAvailability(listingId, currentDate);
+	        			            if (availability == null) {
+	        			            	System.out.println("Sorry, this listing is not available on " + currentDate);
+	        			            	return;
+	        			            }
+	        			            calendar.add(Calendar.DAY_OF_MONTH, 1);
+	        			        }
+	        				} catch (ParseException e) {
+	        		            e.printStackTrace();
+	        		        }
+	        				
 	        				System.out.println("Please enter your credit card number:");
 	        				String cardNumber = scanner.next();
 	        				//Add booking
