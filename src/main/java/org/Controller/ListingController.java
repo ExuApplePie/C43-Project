@@ -26,8 +26,9 @@ public class ListingController {
 
     public static void addListing(Listing listing) {
         try {
-            conn.createStatement().executeUpdate("INSERT IGNORE INTO listing VALUES (" + "NULL, " + listing.getHostId() + ", '" + listing.getType() + "', " + listing.getLongitude() + ", " + listing.getLatitude() + ", '" + listing.getPostalCode() + "', '" + listing.getCountry() + "', '" + listing.getCity() + "')", Statement.RETURN_GENERATED_KEYS);
-            ResultSet resultSet = conn.createStatement().getGeneratedKeys();
+            Statement statement = conn.createStatement();
+            statement.executeUpdate("INSERT IGNORE INTO listing VALUES (" + "NULL, " + listing.getHostId() + ", '" + listing.getType() + "', " + listing.getLongitude() + ", " + listing.getLatitude() + ", '" + listing.getPostalCode() + "', '" + listing.getCountry() + "', '" + listing.getCity() + "')", Statement.RETURN_GENERATED_KEYS);
+            ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 listing.setListingId(resultSet.getInt(1));
             }

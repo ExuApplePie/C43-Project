@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class QueriesController {
     static Connection conn = JdbcSqlServerConnection.conn;
@@ -24,7 +26,7 @@ public class QueriesController {
     }
 
     // Returns all listings within a certain distance of a given longitude and latitude, in kilometers. Uses the Haversine formula.
-    public static Listing[] getListingWithinDistance(float longitude, float latitude, float distance, boolean orderByDistance, boolean orderByPriceAsc) {
+    public static List<Listing> getListingWithinDistance(float longitude, float latitude, float distance, boolean orderByDistance, boolean orderByPriceAsc) {
         createDatesView();
         String orderBy = orderByDistance ? "DISTANCE" : (orderByPriceAsc ? "price ASC" : "price DESC");
         String query = "SELECT listingId FROM dates WHERE (6371 * acos(cos(radians(" + latitude + ")) " +
@@ -33,9 +35,26 @@ public class QueriesController {
         try {
             Statement statement = conn.createStatement();
             ResultSet rs = statement.executeQuery(query);
-            Listing[] listings = new Listing[100];
-            for (int i = 0; rs.next(); i++) {
-                listings[i] = ListingController.getListing(rs.getInt(1));
+            List<Listing> listings = new ArrayList<>();
+            while (rs.next()) {
+                listings.add(ListingController.getListing(rs.getInt(1)));
+            }
+            return listings;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public static List<Listing> getListingByPostalCode(String postalCode) {
+        createDatesView();
+        String query = "SELECT listingId FROM dates WHERE LEFT(postalCode, 5) = LEFT('" + postalCode + "', 5)";
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+            List<Listing> listings = new ArrayList<>();
+            while(rs.next()) {
+                listings.add(ListingController.getListing(rs.getInt(1)));
             }
             return listings;
         } catch (SQLException e) {

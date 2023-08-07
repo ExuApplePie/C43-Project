@@ -25,8 +25,9 @@ public class BookingController {
 
     public static void addBooking(Booking booking) {
         try {
-            conn.createStatement().executeUpdate("INSERT IGNORE INTO booking VALUES (" + "NULL, " + booking.getListingId() + ", " + booking.getGuestId() + ", '" + booking.getStartDate() + "', '" + booking.getEndDate() + "', " + booking.getScore() + ", '" + booking.getComment() + "')", Statement.RETURN_GENERATED_KEYS);
-            ResultSet resultSet = conn.createStatement().getGeneratedKeys();
+            Statement statement = conn.createStatement();
+            statement.executeUpdate("INSERT IGNORE INTO booking VALUES (" + "NULL, " + booking.getListingId() + ", " + booking.getGuestId() + ", '" + booking.getStartDate() + "', '" + booking.getEndDate() + "', " + booking.getScore() + ", '" + booking.getComment() + "')", Statement.RETURN_GENERATED_KEYS);
+            ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 booking.setBookingId(resultSet.getInt(1));
             }
