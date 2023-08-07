@@ -49,7 +49,7 @@ public class Main {
         		Main.host(user, scanner);
         	}
         	else if (choice == 3) {
-        		
+        		Main.rate(user, scanner);
         	}
         	else if (choice == 4) {
         		System.out.println("Thank you for using WindNbN.");
@@ -61,6 +61,73 @@ public class Main {
         }
         scanner.close();
         JdbcSqlServerConnection.closeConnection();
+    }
+    
+    public static void rate(User user, Scanner scanner) {
+    	System.out.println("------Rate-------");
+    	System.out.println("Please select an option");
+    	System.out.println("(1) Rate a Host\n(2) Rate a Renter\n(3) Exit");
+    	int choice = scanner.nextInt();
+    	if (choice == 1) {
+    		Main.rateHost(user, scanner);
+    		return;
+    	} else if (choice == 2) {
+    		Main.deleteListing(user, scanner);
+    		return;
+    	} else if (choice == 3) {
+    		System.out.println("Returning to menu...");
+    		return;
+    	}
+    	System.out.println("Invalid input, returning to menu...");
+    }
+    
+    public static void rateHost(User user, Scanner scanner) {
+        System.out.println("------Rate a Host-------");
+        System.out.println("Please enter the UserId of the host");
+        int hostId = scanner.nextInt();
+        User host = UserController.getUser(hostId);
+        if (host == null) {
+            System.out.println("Error: No host found with that ID.");
+            return;
+        }
+        Booking booking = BookingController.bookingFromHost(user.getUserId(), hostId);
+        if (booking == null) {
+            System.out.println("Error: You have not rented from this host.");
+            return;
+        }
+        System.out.println("Please enter your rating (1-5):");
+        int score = scanner.nextInt();
+        scanner.nextLine(); // Consume the newline character after reading the int
+        
+        System.out.println("Please enter your comment:");
+        String comment = scanner.nextLine(); // Read the whole line, including spaces
+        booking.setComment(comment);
+        booking.setScore(score);
+        BookingController.editBooking(booking);
+        System.out.println("Successfully added rating.");
+    }
+    
+    public static void rateRenter(User user, Scanner scanner) {
+    	System.out.println("------Rate a Renter-------");
+    	System.out.println("Please enter the UserId of the renter");
+    	int renterId = scanner.nextInt();
+    	User renter = UserController.getUser(renterId);
+    	if (renter == null) {
+    		System.out.println("Error: No renter found with that ID.");
+    		return;
+    	}
+    	Booking booking = BookingController.bookingFromRenter(user.getUserId(), renterId);
+    	if (booking == null) {
+    		System.out.println("Error: This user has not rented from you.");
+    		return;
+    	}
+    	System.out.println("Please enter your rating (1-5):");
+    	int score = scanner.nextInt();
+    	System.out.println("Please enter your comment:");
+    	String comment = scanner.next();
+    	Rating rating = new Rating(renterId, user.getUserId(), score, booking.getEndDate(), comment);
+    	RatingController.addRating(rating);
+    	System.out.println("Successfully added rating.");
     }
     
     public static void host(User user, Scanner scanner) {
@@ -113,20 +180,22 @@ public class Main {
 			return;
 		}
 		System.out.println("Listing found. Please update the listing information.");
-		System.out.println("Please enter the type of building:");
+		System.out.println("------Create New Listing-------");
+    	System.out.println("Please enter the type of building:");
 		String type = scanner.next();
 		System.out.println("Please enter the longitude of the listing:");
 		float longitude = scanner.nextFloat();
 		System.out.println("Please enter the latitude of the listing:");
 		float latitude = scanner.nextFloat();
 		System.out.println("Please enter the postal code of the listing:");
-		String postalCode = scanner.next();
-		System.out.println("Please enter the country of the listing (enter '_' instead of spaces):");
-		String country = scanner.next();
-		System.out.println("Please enter the city of the listing (enter '_' instead of spaces):");
-		String city = scanner.next();
-		System.out.println("Please enter the address of the listing (enter '_' instead of spaces):");
-		String address = scanner.next();
+		scanner.nextLine();
+		String postalCode = scanner.nextLine();
+		System.out.println("Please enter the country of the listing:");
+		String country = scanner.nextLine();
+		System.out.println("Please enter the city of the listing:");
+		String city = scanner.nextLine();
+		System.out.println("Please enter the address of the listing:");
+		String address = scanner.nextLine();
 		Listing newListing = new Listing(0, user.getUserId(), type, longitude, latitude, postalCode, country, city, address);
 		ListingController.editListing(newListing);
 		System.out.println("Successfully updated listing!");
@@ -141,13 +210,14 @@ public class Main {
 		System.out.println("Please enter the latitude of the listing:");
 		float latitude = scanner.nextFloat();
 		System.out.println("Please enter the postal code of the listing:");
-		String postalCode = scanner.next();
-		System.out.println("Please enter the country of the listing (enter '_' instead of spaces):");
-		String country = scanner.next();
-		System.out.println("Please enter the city of the listing (enter '_' instead of spaces):");
-		String city = scanner.next();
-		System.out.println("Please enter the address of the listing (enter '_' instead of spaces):");
-		String address = scanner.next();
+		scanner.nextLine();
+		String postalCode = scanner.nextLine();
+		System.out.println("Please enter the country of the listing:");
+		String country = scanner.nextLine();
+		System.out.println("Please enter the city of the listing:");
+		String city = scanner.nextLine();
+		System.out.println("Please enter the address of the listing:");
+		String address = scanner.nextLine();
 		Listing listing = new Listing(0, user.getUserId(), type, longitude, latitude, postalCode, country, city, address);
 		ListingController.addListing(listing);
 		
@@ -248,7 +318,7 @@ public class Main {
     	System.out.println("------Find and Book-------");
     	while (true) {
     		System.out.println("Select how you would like to locate a listing");
-        	System.out.println("(1) Longitude and Latitude\n(2) City\n (3) Country\n(4) Postal Code\n(5) Return");
+        	System.out.println("(1) Longitude and Latitude\n(2) City\n(3) Country\n(4) Postal Code\n(5) Return");
         	int choice = scanner.nextInt();
 
         	if (choice == 1) {

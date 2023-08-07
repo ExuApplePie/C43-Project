@@ -47,7 +47,7 @@ public class ListingController {
 
     public static void editListing(Listing listing) {
         try {
-            conn.createStatement().executeUpdate("UPDATE listing SET type = " + listing.getType() + "', longitude = " + listing.getLongitude() + ", latitude = " + listing.getLatitude() + ", postalCode = '" + listing.getPostalCode() + "', country = '" + listing.getCountry() + "', city = '" + listing.getCity() + "', address = '" + listing.getAddress() + " WHERE listingId = " + listing.getListingId());
+            conn.createStatement().executeUpdate("UPDATE listing SET type = '" + listing.getType() + "', longitude = " + listing.getLongitude() + ", latitude = " + listing.getLatitude() + ", postalCode = '" + listing.getPostalCode() + "', country = '" + listing.getCountry() + "', city = '" + listing.getCity() + "', address = '" + listing.getAddress() + "' WHERE listingId = " + listing.getListingId());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

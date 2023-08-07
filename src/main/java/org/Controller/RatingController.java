@@ -20,7 +20,7 @@ public class RatingController {
                         resultSet.getString(4), resultSet.getString(5));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return null;
         }
         return rating;
     }

@@ -46,9 +46,37 @@ public class BookingController {
 
     public static void editBooking(Booking booking) {
         try {
-            conn.createStatement().executeUpdate("UPDATE booking SET startDate = " + booking.getStartDate() + "', endDate = '" + booking.getEndDate() + "', score = " + booking.getScore() + ", comment = '" + booking.getComment() + ", creditcard = '" + booking.getCreditCardNumber() + "' WHERE bookingId = " + booking.getBookingId());
+            conn.createStatement().executeUpdate("UPDATE booking SET startDate = '" + booking.getStartDate() + "', endDate = '" + booking.getEndDate() + "', score = " + booking.getScore() + ", comment = '" + booking.getComment() + "', creditcard = '" + booking.getCreditCardNumber() + "' WHERE bookingId = " + booking.getBookingId());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+    
+    public static Booking bookingFromHost(int userId, int hostId) {
+    	Booking booking = null;
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM booking b INNER JOIN listing l ON b.listingId = l.listingId WHERE b.guestId = " + userId + " AND l.hostId = " + hostId + ";");
+            while (resultSet.next()) {
+                booking = new Booking(resultSet.getInt(1), resultSet.getInt(2), resultSet.getInt(3), resultSet.getString(4), resultSet.getString(5), resultSet.getInt(6), resultSet.getString(7), resultSet.getString(8));
+            }
+        } catch (SQLException e) {
+            return null;
+        }
+        return booking;
+    }
+    public static Booking bookingFromRenter(int userId, int renterId) {
+    	Booking booking = null;
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM booking b INNER JOIN listing l ON b.listingId = l.listingId WHERE b.guestId = " + renterId + " AND l.hostId = " + userId + ";");
+            while (resultSet.next()) {
+                booking = new Booking(resultSet.getInt(1), resultSet.getInt(2), resultSet.getInt(3), resultSet.getString(4), resultSet.getString(5), resultSet.getInt(6), resultSet.getString(7), resultSet.getString(8));
+            }
+        } catch (SQLException e) {
+            return null;
+        }
+        return booking;
+    }
+    
 }
