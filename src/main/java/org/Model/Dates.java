@@ -1,6 +1,8 @@
 package org.Model;
 
-import static org.Model.DateParser.formatDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 // join table for listing and availability and amenities - view only
 public class Dates {
@@ -16,12 +18,12 @@ public class Dates {
     private String date;
     private boolean available;
     private int price;
-    private int quantity;
-    private String amenityName;
-    private int amenityId;
+    private List<String> amenities = new ArrayList<>();
+    private List<Integer> quantities = new ArrayList<>();
 
 
-    public Dates(int listingId, int hostId, String type, float longitude, float latitude, String postalCode, String country, String city, String address, String date, boolean available, int price, int quantity, String amenityName, int amenityId) {
+
+    public Dates(int listingId, int hostId, String type, float longitude, float latitude, String postalCode, String country, String city, String address, String date, boolean available, int price, String amenities, String quantities) {
         this.listingId = listingId;
         this.hostId = hostId;
         this.type = type;
@@ -34,9 +36,11 @@ public class Dates {
         this.date = date;
         this.available = available;
         this.price = price;
-        this.quantity = quantity;
-        this.amenityName = amenityName;
-        this.amenityId = amenityId;
+        this.amenities = Arrays.asList(amenities.split(",")); // split string into list
+        String[] quantityArray = quantities.split(",");
+        for (String quantity : quantityArray) {
+            this.quantities.add(Integer.parseInt(quantity));
+        }
     }
 
     public int getListingId() {
@@ -87,15 +91,31 @@ public class Dates {
         return price;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public List<String> getAmenities() {
+        return amenities;
     }
 
-    public String getAmenityName() {
-        return amenityName;
+    public List<Integer> getQuantities() {
+        return quantities;
     }
 
-    public int getAmenityId() {
-        return amenityId;
+    @Override
+    public String toString() {
+        return "Dates{" +
+                "listingId=" + listingId +
+                ", hostId=" + hostId +
+                ", type='" + type + '\'' +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                ", postalCode='" + postalCode + '\'' +
+                ", country='" + country + '\'' +
+                ", city='" + city + '\'' +
+                ", address='" + address + '\'' +
+                ", date='" + date + '\'' +
+                ", available=" + available +
+                ", price=" + price +
+                ", amenities=" + amenities +
+                ", quantities=" + quantities +
+                '}';
     }
 }

@@ -142,4 +142,46 @@ public class ReportController {
             return "No hosts have more than 10% of the total listings in their region.";
         }
     }
+
+    // first element is the guestId, second element is the number of bookings
+    public static List<int[]> getRenterRanking(String startDate, String endDate) {
+        String sql = "SELECT guestId, COUNT(*) as num_bookings " +
+                "FROM booking " +
+                "WHERE startDate BETWEEN '"+ startDate + "' AND '" + endDate + "' " +
+                "GROUP BY guestId " +
+                "ORDER BY num_bookings DESC";
+        try {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            List<int[]> renters = new ArrayList<>();
+            while (rs.next()) {
+                renters.add(new int[]{rs.getInt(1), rs.getInt(2)});
+            }
+            return renters;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static List<int[]> getRenterRanking(String startDate, String endDate, String city) {
+        String sql = "SELECT guestId, COUNT(*) as num_bookings " +
+                "FROM booking b, listing l " +
+                "WHERE b.startDate BETWEEN '"+ startDate + "' AND '" + endDate + "' " +
+                "AND b.listingId = l.listingId " +
+                "AND l.city = '" + city + "' " +
+                "GROUP BY guestId " +
+                "HAVING num_bookings >= 2 " +
+                "ORDER BY num_bookings DESC";
+        try {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            List<int[]> renters = new ArrayList<>();
+            while (rs.next()) {
+                renters.add(new int[]{rs.getInt(1), rs.getInt(2)});
+            }
+            return renters;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
