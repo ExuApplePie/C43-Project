@@ -15,6 +15,8 @@ public class QueriesController {
     public static void createDatesWithAmenitiesView() {
         try {
             Statement stmt = conn.createStatement();
+            String dropView = "DROP VIEW IF EXISTS dates";
+            stmt.execute(dropView);
             String sql = "CREATE VIEW dates AS " +
                     "SELECT Listing.*, Availability.date, Availability.available, Availability.price, Availability.listingId AS availability_listingId, listingamenity.quantity, amenity.name, amenity.amenityId AS amenity_id " +
                     "FROM Listing " +
