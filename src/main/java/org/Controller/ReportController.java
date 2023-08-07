@@ -78,4 +78,53 @@ public class ReportController {
             throw new RuntimeException(e);
         }
     }
+
+    // Returns an array of host IDs who have more than 10% of the total listings in a region
+    public static int[] getCommercialHosts(String country, String city) {
+        try {
+            String sql = "SELECT hostId, COUNT(*) as num_listings " +
+                    "FROM listing " +
+                    "WHERE city = '" + city + "' AND country = '" + country + "' " +
+                    "GROUP BY hostId " +
+                    "HAVING num_listings > ( " +
+                    "SELECT COUNT(*) * 0.1 " +
+                    "FROM listing l2 " +
+                    "WHERE l2.city = '" + city + "' AND l2.country = '" + country + "'" +
+                    ")";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            int[] hosts = new int[rs.getFetchSize()];
+            for (int i = 0; rs.next(); i++) {
+                hosts[i] = rs.getInt(1);
+            }
+            return hosts;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static int[] getCommercialHosts(String country) {
+        try {
+            String sql = "SELECT hostId, COUNT(*) as num_listings " +
+                    "FROM listing " +
+                    "WHERE country = '" + country + "' " +
+                    "GROUP BY hostId " +
+                    "HAVING num_listings > ( " +
+                    "SELECT COUNT(*) * 0.1 " +
+                    "FROM listing l2 " +
+                    "WHERE l2.country = '" + country + "'" +
+                    ")";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            int[] hosts = new int[rs.getFetchSize()];
+            for (int i = 0; rs.next(); i++) {
+                hosts[i] = rs.getInt(1);
+            }
+            return hosts;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }
