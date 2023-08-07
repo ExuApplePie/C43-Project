@@ -18,7 +18,21 @@ public class AmenityController {
                 amenity = new Amenity(resultSet.getInt(1), resultSet.getString(2));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return null;
+        }
+        return amenity;
+    }
+    
+    public static Amenity getAmenity(String amenityName) {
+        Amenity amenity = null;
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM amenity WHERE name = " + amenityName);
+            while (resultSet.next()) {
+                amenity = new Amenity(resultSet.getInt(1), resultSet.getString(2));
+            }
+        } catch (SQLException e) {
+            return null;
         }
         return amenity;
     }

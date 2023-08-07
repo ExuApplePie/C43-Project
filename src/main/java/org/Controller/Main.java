@@ -151,16 +151,45 @@ public class Main {
 		Listing listing = new Listing(0, user.getUserId(), type, longitude, latitude, postalCode, country, city, address);
 		ListingController.addListing(listing);
 		
+		int estimatedPrice = 50;
+		
+		if (type.equals("apartment")) {
+			estimatedPrice = 30;
+		} else if (type.equals("house")) {
+			estimatedPrice = 90;
+		} else if (type.equals("cabin")) {
+			estimatedPrice = 70;
+		}
+		
 		while (true) {
 			System.out.println("Please enter an amenity in the building, or enter \"exit\" to stop (enter '_' instead of spaces):");
+			System.out.println("Consider adding the following amenities: 'bedroom', 'bathroom', 'kitchen', 'pool', 'wifi'");
 			String amenityName = scanner.next();
 			if (amenityName.equals("exit")) {
 				break;
 			}
 			System.out.println("Please enter the quantity:");
 			int quantity = scanner.nextInt();
-			Amenity amenity = new Amenity(0, amenityName);
-			AmenityController.addAmenity(amenity);
+			
+			Amenity amenity = null;
+			if (AmenityController.getAmenity(amenityName) != null) {
+				amenity = AmenityController.getAmenity(amenityName);
+				if (amenity.getName().equals("bedroom")) {
+					estimatedPrice += 50 * quantity;
+				} else if (amenity.getName().equals("wifi")) {
+					estimatedPrice += 35 * quantity;
+				} else if (amenity.getName().equals("bathroom")) {
+					estimatedPrice += 25 * quantity;
+				} else if (amenity.getName().equals("kitchen")) {
+					estimatedPrice += 40 * quantity;
+				} else if (amenity.getName().equals("pool")) {
+					estimatedPrice += 75 * quantity;
+				}
+			} else {
+				amenity = new Amenity(0, amenityName);
+				AmenityController.addAmenity(amenity);
+				estimatedPrice += 20 * quantity;
+			}
 			ListingAmenity listingAmenity = new ListingAmenity(listing.getListingId(), amenity.getAmenityId(), quantity);
 			ListingAmenityController.addListingAmenity(listingAmenity);
 			System.out.println("Successfully added " + quantity + " of " + amenityName +".");
@@ -170,6 +199,7 @@ public class Main {
 		System.out.println("Please enter an end date for your listing (in YYYY-MM-DD format):");
 		String endDate = scanner.next();
 		System.out.println("Please enter a price for your listing (per day, in $):");
+		System.out.println("According to the amenities added, we recommend the price of $" + estimatedPrice);
 		int price = scanner.nextInt();
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -205,7 +235,7 @@ public class Main {
         	if (choice == 1) {
         		Main.findAndBook(user, scanner);
         	} else if (choice == 2) {
-        		
+        		Main.cancelBooking(user, scanner);
         	} else if (choice == 3) {
         		System.out.println("Returning to menu...");
         		break;
