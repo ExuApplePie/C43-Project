@@ -261,7 +261,9 @@ public class Main {
 				
         		while (true) {
 	        		System.out.println("Listings:\n--------");
-	        		System.out.println(searchListings);
+	        		for (int i = 0 ; i < searchListings.size(); i++) {
+	        			System.out.println(searchListings.get(i).toString());
+	        		}
 	        		System.out.println("--------");
 	        		System.out.println("Please enter the listingId that you would like to rent, or '0' to exit:");
 	        		int listingId = scanner.nextInt();
