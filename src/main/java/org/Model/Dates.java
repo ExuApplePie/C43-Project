@@ -2,7 +2,7 @@ package org.Model;
 
 import static org.Model.DateParser.formatDate;
 
-// join table for listing and availability - view only
+// join table for listing and availability and amenities - view only
 public class Dates {
     private int listingId;
     private String date;
@@ -15,8 +15,11 @@ public class Dates {
     private String postalCode;
     private String country;
     private String city;
+    private int amenityId;
+    private String amenityName;
+    private int quantity;
 
-    public Dates(int listingId, String date, boolean available, int price, int hostId, String type, float longitude, float latitude, String postalCode, String country, String city) {
+    public Dates(int listingId, String date, boolean available, int price, int hostId, String type, float longitude, float latitude, String postalCode, String country, String city, int amenityId, String amenityName, int quantity) {
         this.listingId = listingId;
         this.date = formatDate(date);
         this.available = available;
@@ -28,6 +31,9 @@ public class Dates {
         this.postalCode = postalCode;
         this.country = country;
         this.city = city;
+        this.amenityId = amenityId;
+        this.amenityName = amenityName;
+        this.quantity = quantity;
     }
 
     public int getListingId() {
@@ -72,5 +78,17 @@ public class Dates {
 
     public String getCity() {
         return city;
+    }
+
+    public int getAmenityId() {
+        return amenityId;
+    }
+
+    public String getAmenityName() {
+        return amenityName;
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 }
