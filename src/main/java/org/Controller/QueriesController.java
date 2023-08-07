@@ -25,6 +25,7 @@ public class QueriesController {
                     "INNER JOIN ListingAmenity ON listing.listingId = listingamenity.listingId " +
                     "INNER JOIN Amenity ON listingamenity.amenityId = amenity.amenityId";
             stmt.execute(sql);
+            System.out.println("Create Dates View Success");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -54,7 +55,7 @@ public class QueriesController {
 
     private static String generateAmenitiesQuery(List<String> amenities) {
         String amenitiesQuery = "";
-        if (amenities != null) {
+        if (amenities != null && amenities.size() > 0) {
             amenitiesQuery = "AND name IN (";
             for (int i = 0; i < amenities.size(); i++) {
                 amenitiesQuery += "'" + amenities.get(i) + "'";
@@ -84,8 +85,8 @@ public class QueriesController {
         createDatesWithAmenitiesView();
         String orderBy = orderByDistance ? "DISTANCE" : (orderByPriceAsc ? "price ASC" : "price DESC");
         String queryFilter = generateAllQueries(startDate, endDate, lowestPrice, highestPrice, amenities);
-        String query = "SELECT listingId FROM dates WHERE (6371 * acos(cos(radians(" + latitude + ")) " +
-                "* cos(radians(latitude)) * cos(radians(longitude) - radians(" + longitude + ")) + sin(radians(" + latitude + ")) * sin(radians(latitude))))" + " AS DISTANCE " +
+        String query = "SELECT listingId, (6371 * acos(cos(radians(" + latitude + ")) " +
+                "* cos(radians(latitude)) * cos(radians(longitude) - radians(" + longitude + ")) + sin(radians(" + latitude + ")) * sin(radians(latitude)))) AS DISTANCE " +
                 queryFilter + " FROM Listing HAVING DISTANCE < " + distance + " ORDER BY " + orderBy;
         return getDates(query);
     }
