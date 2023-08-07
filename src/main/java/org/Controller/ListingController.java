@@ -19,7 +19,7 @@ public class ListingController {
                 listing = new Listing(resultSet.getInt(1), resultSet.getInt(2), resultSet.getString(3), resultSet.getFloat(4), resultSet.getFloat(5), resultSet.getString(6), resultSet.getString(7), resultSet.getString(8), resultSet.getString(9));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return null;
         }
         return listing;
     }
