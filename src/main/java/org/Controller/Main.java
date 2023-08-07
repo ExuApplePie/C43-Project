@@ -279,7 +279,30 @@ public class Main {
 	        				String bookingStartDate = scanner.next();
 	        				System.out.println("Please enter an end date for your booking:");
 	        				String bookingEndDate = scanner.next();
-	        				//Check availability
+	        				
+	        				// Check availability
+	        				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	        				try {
+	        					Date startDate2 = sdf.parse(startDate);
+	        			        Date endDate2 = sdf.parse(endDate);
+	        			        
+	        			        Calendar calendar = Calendar.getInstance();
+	        			        calendar.setTime(startDate2);
+	        			        
+	        			        while (!calendar.getTime().after(endDate2)) {
+	        			            String currentDateStr = sdf.format(calendar.getTime());
+	        			            String currentDate = formatDate(currentDateStr);
+	        			            Availability availability = AvailabilityController.getAvailability(listingId, currentDate);
+	        			            if (availability == null) {
+	        			            	System.out.println("Sorry, this listing is not available on " + currentDate);
+	        			            	return;
+	        			            }
+	        			            calendar.add(Calendar.DAY_OF_MONTH, 1);
+	        			        }
+	        				} catch (ParseException e) {
+	        		            e.printStackTrace();
+	        		        }
+	        				
 	        				System.out.println("Please enter your credit card number:");
 	        				String cardNumber = scanner.next();
 	        				//Add booking

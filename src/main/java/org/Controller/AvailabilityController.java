@@ -17,7 +17,7 @@ public class AvailabilityController {
                 availability = new Availability(resultSet.getInt(1), resultSet.getString(2), resultSet.getBoolean(3), resultSet.getInt(4));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return null;
         }
         return availability;
     }
