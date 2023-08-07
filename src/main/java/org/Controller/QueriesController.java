@@ -25,7 +25,6 @@ public class QueriesController {
                     "INNER JOIN ListingAmenity ON listing.listingId = listingamenity.listingId " +
                     "INNER JOIN Amenity ON listingamenity.amenityId = amenity.amenityId";
             stmt.executeUpdate(sql);
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -87,7 +86,7 @@ public class QueriesController {
         String queryFilter = generateAllQueries(startDate, endDate, lowestPrice, highestPrice, amenities);
         String query = "SELECT listingId, (6371 * acos(cos(radians(" + latitude + ")) " +
                 "* cos(radians(latitude)) * cos(radians(longitude) - radians(" + longitude + ")) + sin(radians(" + latitude + ")) * sin(radians(latitude)))) AS DISTANCE " +
-                queryFilter + " FROM Dates HAVING DISTANCE < " + distance + " ORDER BY " + orderBy;
+                "FROM Dates WHERE 1=1 " + queryFilter + " HAVING DISTANCE < " + distance + " ORDER BY " + orderBy;
         return getDates(query);
     }
 
