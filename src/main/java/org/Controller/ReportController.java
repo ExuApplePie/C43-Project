@@ -11,6 +11,7 @@ public class ReportController {
     static Connection conn = JdbcSqlServerConnection.conn;
     public static int getTotalListings(String country, String city, String postalCode) {
         try {
+            System.out.println(warnCommercialHost(getCommercialHosts(country, city)));
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM listing WHERE country = '" + country + "' AND city = '" + city + "' AND postalCode = '" + postalCode + "'");
             while (resultSet.next()) {
@@ -23,6 +24,7 @@ public class ReportController {
     }
     public static int getTotalListings(String country, String city) {
         try {
+            System.out.println(warnCommercialHost(getCommercialHosts(country, city)));
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM listing WHERE country = '" + country + "' AND city = '" + city + "'");
             while (resultSet.next()) {
@@ -36,6 +38,7 @@ public class ReportController {
 
     public static int getTotalListings(String country) {
         try {
+            System.out.println(warnCommercialHost(getCommercialHosts(country)));
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM listing WHERE country = '" + country + "'");
             while (resultSet.next()) {
@@ -126,5 +129,17 @@ public class ReportController {
         }
     }
 
-
+    // Still needs to prohibit???
+    public static String warnCommercialHost(int[] hosts) {
+        if (hosts.length > 0) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("The following hosts have more than 10% of the total listings in their region:\n");
+            for (int host : hosts) {
+                sb.append(host).append("\n");
+            }
+            return sb.toString();
+        } else {
+            return "No hosts have more than 10% of the total listings in their region.";
+        }
+    }
 }

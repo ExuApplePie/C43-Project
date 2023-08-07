@@ -86,7 +86,7 @@ public class QueriesController {
         String queryFilter = generateAllQueries(startDate, endDate, lowestPrice, highestPrice, amenities);
         String query = "SELECT listingId, (6371 * acos(cos(radians(" + latitude + ")) " +
                 "* cos(radians(latitude)) * cos(radians(longitude) - radians(" + longitude + ")) + sin(radians(" + latitude + ")) * sin(radians(latitude)))) AS DISTANCE " +
-                "FROM Dates WHERE 1=1 " + queryFilter + " HAVING DISTANCE < " + distance + " ORDER BY " + orderBy;
+                "FROM Dates WHERE available = 1 " + queryFilter + " HAVING DISTANCE < " + distance + " ORDER BY " + orderBy;
         return getDates(query);
     }
 
