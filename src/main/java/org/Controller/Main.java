@@ -111,11 +111,11 @@ public class Main {
 		float latitude = scanner.nextFloat();
 		System.out.println("Please enter the postal code of the listing:");
 		String postalCode = scanner.next();
-		System.out.println("Please enter the country of the listing:");
+		System.out.println("Please enter the country of the listing (enter '_' instead of spaces):");
 		String country = scanner.next();
-		System.out.println("Please enter the city of the listing:");
+		System.out.println("Please enter the city of the listing (enter '_' instead of spaces):");
 		String city = scanner.next();
-		System.out.println("Please enter the address of the listing:");
+		System.out.println("Please enter the address of the listing (enter '_' instead of spaces):");
 		String address = scanner.next();
 		Listing newListing = new Listing(0, user.getUserId(), type, longitude, latitude, postalCode, country, city, address);
 		ListingController.editListing(newListing);
