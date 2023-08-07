@@ -18,7 +18,7 @@ public class BookingController {
                 booking = new Booking(resultSet.getInt(1), resultSet.getInt(2), resultSet.getInt(3), resultSet.getString(4), resultSet.getString(5), resultSet.getInt(6), resultSet.getString(7), resultSet.getString(8));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return null;
         }
         return booking;
     }

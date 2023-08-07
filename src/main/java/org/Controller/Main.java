@@ -261,60 +261,73 @@ public class Main {
 				
         		while (true) {
 	        		System.out.println("Listings:\n--------");
-	        		for (int i = 0 ; i < searchListings.size(); i++) {
-	        			System.out.println(searchListings.get(i).toString());
-	        		}
+	        		Main.printDateList(searchListings);
 	        		System.out.println("--------");
 	        		System.out.println("Please enter the listingId that you would like to rent, or '0' to exit:");
 	        		int listingId = scanner.nextInt();
 	        		if (listingId == 0) {
 	        			System.out.println("Exiting...");
-	        			break;
-	        		} else {
-	        			Listing listing = ListingController.getListing(listingId);
-	        			System.out.println("Listing details\n--------------");
-	        			// Bring out listing details
-	        			System.out.println("Enter '1' to book, or any other number to leave:");
-	        			choice = scanner.nextInt();
-	        			if (choice == 1) {
-	        				System.out.println("Please enter a start date for your booking:");
-	        				String bookingStartDate = scanner.next();
-	        				System.out.println("Please enter an end date for your booking:");
-	        				String bookingEndDate = scanner.next();
-	        				
-	        				// Check availability
-	        				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	        				try {
-	        					Date startDate2 = sdf.parse(startDate);
-	        			        Date endDate2 = sdf.parse(endDate);
-	        			        
-	        			        Calendar calendar = Calendar.getInstance();
-	        			        calendar.setTime(startDate2);
-	        			        
-	        			        while (!calendar.getTime().after(endDate2)) {
-	        			            String currentDateStr = sdf.format(calendar.getTime());
-	        			            String currentDate = formatDate(currentDateStr);
-	        			            Availability availability = AvailabilityController.getAvailability(listingId, currentDate);
-	        			            if (availability == null) {
-	        			            	System.out.println("Sorry, this listing is not available on " + currentDate);
-	        			            	return;
-	        			            }
-	        			            calendar.add(Calendar.DAY_OF_MONTH, 1);
-	        			        }
-	        				} catch (ParseException e) {
-	        		            e.printStackTrace();
-	        		        }
-	        				
-	        				System.out.println("Please enter your credit card number:");
-	        				String cardNumber = scanner.next();
-	        				//Add booking
-	        				System.out.println("Successfully booked!");
-	        				break;
-	        			} else {
-	        				System.out.println("Returning to list...");
-	        			}
-	        			
-	        		}
+						break;
+					} else {
+						Listing listing = ListingController.getListing(listingId);
+
+						System.out.println("Please enter a start date for your booking (in YYYY-MM-DD format):");
+						String bookingStartDate = scanner.next();
+						System.out.println("Please enter an end date for your booking (in YYYY-MM-DD format):");
+						String bookingEndDate = scanner.next();
+
+						// Check availability
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+						try {
+							Date startDate2 = sdf.parse(bookingStartDate);
+							Date endDate2 = sdf.parse(bookingEndDate);
+
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(startDate2);
+
+							while (!calendar.getTime().after(endDate2)) {
+								String currentDateStr = sdf.format(calendar.getTime());
+								String currentDate = formatDate(currentDateStr);
+								Availability availability = AvailabilityController.getAvailability(listingId, currentDate);
+								if (availability == null || availability.isAvailable() == false) {
+									System.out.println("Sorry, this listing is not available on " + currentDate);
+									return;
+								}
+								calendar.add(Calendar.DAY_OF_MONTH, 1);
+							}
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+
+						System.out.println("Please enter your credit card number:");
+						String cardNumber = scanner.next();
+						
+						try {
+							Date startDate2 = sdf.parse(bookingStartDate);
+							Date endDate2 = sdf.parse(bookingEndDate);
+
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(startDate2);
+
+							while (!calendar.getTime().after(endDate2)) {
+								String currentDateStr = sdf.format(calendar.getTime());
+								String currentDate = formatDate(currentDateStr);
+								Availability availability = AvailabilityController.getAvailability(listingId,
+										currentDate);
+								availability.setAvailable(false);
+								AvailabilityController.editAvailability(availability);
+								calendar.add(Calendar.DAY_OF_MONTH, 1);
+							}
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+						
+						Booking booking = new Booking(0, listingId, user.getUserId(), bookingStartDate, bookingEndDate, 0, "", cardNumber);
+						BookingController.addBooking(booking);
+						System.out.println("Successfully booked! Your bookingId is: " + booking.getBookingId());
+						break;
+
+					}
         		}
         		
         		continue;
@@ -444,6 +457,45 @@ public class Main {
         }
     }
     
+    public static void cancelBooking (User user, Scanner scanner) {
+    	System.out.println("------Find and Book-------");
+    	System.out.println("Please enter the bookingId that you would like to cancel: ");
+    	int bookingId = scanner.nextInt();
+    	Booking booking = BookingController.getBooking(bookingId);
+    	
+    	if (booking == null) {
+    		System.out.println("Error: Invalid bookingId.");
+    		return;
+    	} else if (booking.getGuestId() != user.getUserId()){
+    		System.out.println("Error: This is not your booking.");
+    		return;
+    	}
+    	
+    	// Set all availability dates to true
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			Date startDate = sdf.parse(booking.getStartDate());
+			Date endDate = sdf.parse(booking.getEndDate());
+
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(startDate);
+
+			while (!calendar.getTime().after(endDate)) {
+				String currentDateStr = sdf.format(calendar.getTime());
+				String currentDate = formatDate(currentDateStr);
+				Availability availability = AvailabilityController.getAvailability(booking.getListingId(), currentDate);
+				availability.setAvailable(true);
+				AvailabilityController.editAvailability(availability);
+				calendar.add(Calendar.DAY_OF_MONTH, 1);
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		BookingController.deleteBooking(bookingId);
+		System.out.println("Successfully deleted booking.");
+		return;
+    }
+    
     
     public static User entry(Scanner scanner) {
         int userId = -1;
@@ -490,4 +542,12 @@ public class Main {
 	        }
 	    }
 	}
+    
+    static void printDateList(List<Dates> searchListings) {
+    	for (int i = 0 ; i < searchListings.size(); i++) {
+    		Dates listing = searchListings.get(i);
+    		System.out.println("ListingID: " + listing.getListingId() + " | Address: " + listing.getAddress());
+    	}
+    }
+    
 }
