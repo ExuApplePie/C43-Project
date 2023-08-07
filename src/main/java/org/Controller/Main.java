@@ -28,6 +28,7 @@ public class Main {
         JdbcSqlServerConnection.connectToServer();
         JdbcSqlServerConnection.initDatabase();
         Scanner scanner = new Scanner(System.in);
+		QueriesController.createDatesWithAmenitiesView();
 
 		User user = Main.entry(scanner);
         if (user == null) {
