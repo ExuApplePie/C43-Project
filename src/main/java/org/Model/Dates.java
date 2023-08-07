@@ -15,11 +15,12 @@ public class Dates {
     private String postalCode;
     private String country;
     private String city;
+    private String address;
     private int amenityId;
     private String amenityName;
     private int quantity;
 
-    public Dates(int listingId, String date, boolean available, int price, int hostId, String type, float longitude, float latitude, String postalCode, String country, String city, int amenityId, String amenityName, int quantity) {
+    public Dates(int listingId, String date, boolean available, int price, int hostId, String type, float longitude, float latitude, String postalCode, String country, String city, String address, int amenityId, String amenityName, int quantity) {
         this.listingId = listingId;
         this.date = formatDate(date);
         this.available = available;
@@ -31,6 +32,7 @@ public class Dates {
         this.postalCode = postalCode;
         this.country = country;
         this.city = city;
+        this.address = address;
         this.amenityId = amenityId;
         this.amenityName = amenityName;
         this.quantity = quantity;
@@ -78,6 +80,10 @@ public class Dates {
 
     public String getCity() {
         return city;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
     public int getAmenityId() {
