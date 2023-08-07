@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `listing` (
   `address` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`listingId`),
   KEY `listingHID_idx` (`hostId`),
-  CONSTRAINT `listingHID` FOREIGN KEY (`hostId`) REFERENCES `user` (`userId`)
+  CONSTRAINT `listingHID` FOREIGN KEY (`hostId`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 @@@
 CREATE TABLE IF NOT EXISTS `availability` (
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `availability` (
   `available` tinyint NOT NULL,
   `price` int NOT NULL,
   PRIMARY KEY (`listingId`,`date`),
-  CONSTRAINT `availabilityLID` FOREIGN KEY (`listingId`) REFERENCES `listing` (`listingId`)
+  CONSTRAINT `availabilityLID` FOREIGN KEY (`listingId`) REFERENCES `listing` (`listingId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 @@@
 CREATE TABLE IF NOT EXISTS `booking` (
@@ -51,8 +51,8 @@ CREATE TABLE IF NOT EXISTS `booking` (
   PRIMARY KEY (`bookingId`),
   KEY `bookingLID_idx` (`listingId`),
   KEY `bookingGID_idx` (`guestId`),
-  CONSTRAINT `bookingGID` FOREIGN KEY (`guestId`) REFERENCES `user` (`userId`),
-  CONSTRAINT `bookingLID` FOREIGN KEY (`listingId`) REFERENCES `listing` (`listingId`)
+  CONSTRAINT `bookingGID` FOREIGN KEY (`guestId`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `bookingLID` FOREIGN KEY (`listingId`) REFERENCES `listing` (`listingId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 @@@
@@ -62,8 +62,8 @@ CREATE TABLE IF NOT EXISTS `listingamenity` (
   `quantity` int NOT NULL,
   PRIMARY KEY (`listingId`,`amenityId`),
   KEY `listingamenityAID_idx` (`amenityId`),
-  CONSTRAINT `listingamenityAID` FOREIGN KEY (`amenityId`) REFERENCES `amenity` (`amenityId`),
-  CONSTRAINT `listingamenityLID` FOREIGN KEY (`listingId`) REFERENCES `listing` (`listingId`)
+  CONSTRAINT `listingamenityAID` FOREIGN KEY (`amenityId`) REFERENCES `amenity` (`amenityId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `listingamenityLID` FOREIGN KEY (`listingId`) REFERENCES `listing` (`listingId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 @@@
 CREATE TABLE IF NOT EXISTS `rating` (
@@ -74,6 +74,6 @@ CREATE TABLE IF NOT EXISTS `rating` (
   `comment` text,
   PRIMARY KEY (`renterId`,`hostId`),
   KEY `ratingHID_idx` (`hostId`),
-  CONSTRAINT `ratingHID` FOREIGN KEY (`hostId`) REFERENCES `user` (`userId`),
-  CONSTRAINT `ratingRID` FOREIGN KEY (`renterId`) REFERENCES `user` (`userId`)
+  CONSTRAINT `ratingHID` FOREIGN KEY (`hostId`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `ratingRID` FOREIGN KEY (`renterId`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
