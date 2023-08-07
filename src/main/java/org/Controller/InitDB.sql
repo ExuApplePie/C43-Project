@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `listing` (
   `postalCode` varchar(45) NOT NULL,
   `country` varchar(45) NOT NULL,
   `city` varchar(45) NOT NULL,
+  `address` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`listingId`),
   KEY `listingHID_idx` (`hostId`),
   CONSTRAINT `listingHID` FOREIGN KEY (`hostId`) REFERENCES `user` (`userId`)

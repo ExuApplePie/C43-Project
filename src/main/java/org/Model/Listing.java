@@ -9,8 +9,9 @@ public class Listing {
     private String postalCode;
     private String country;
     private String city;
+    private String address;
 
-    public Listing(int listingId, int hostId, String type, float longitude, float latitude, String postalCode, String country, String city) {
+    public Listing(int listingId, int hostId, String type, float longitude, float latitude, String postalCode, String country, String city, String address) {
         this.listingId = listingId;
         this.hostId = hostId;
         this.type = type;
@@ -19,6 +20,7 @@ public class Listing {
         this.postalCode = postalCode;
         this.country = country;
         this.city = city;
+        this.address = address;
     }
 
     public int getListingId() {
@@ -81,6 +83,14 @@ public class Listing {
         this.city = city;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     @Override
     public String toString() {
         return "Listing{" +
@@ -92,6 +102,7 @@ public class Listing {
                 ", postalCode='" + postalCode + '\'' +
                 ", country='" + country + '\'' +
                 ", city='" + city + '\'' +
+                ", address='" + address + '\'' +
                 '}';
     }
 }
