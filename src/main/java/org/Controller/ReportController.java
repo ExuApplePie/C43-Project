@@ -78,4 +78,10 @@ public class ReportController {
             throw new RuntimeException(e);
         }
     }
+
+    // Returns an array of host IDs who have more than 10% of the total listings in a region
+    public static int[] getCommercialHosts(String country, String city) {
+
+        return null;
+    }
 }

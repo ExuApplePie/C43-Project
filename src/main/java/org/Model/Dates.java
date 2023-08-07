@@ -5,9 +5,6 @@ import static org.Model.DateParser.formatDate;
 // join table for listing and availability and amenities - view only
 public class Dates {
     private int listingId;
-    private String date;
-    private boolean available;
-    private int price;
     private int hostId;
     private String type;
     private float longitude;
@@ -16,15 +13,16 @@ public class Dates {
     private String country;
     private String city;
     private String address;
-    private int amenityId;
-    private String amenityName;
+    private String date;
+    private boolean available;
+    private int price;
     private int quantity;
+    private String amenityName;
+    private int amenityId;
 
-    public Dates(int listingId, String date, boolean available, int price, int hostId, String type, float longitude, float latitude, String postalCode, String country, String city, String address, int amenityId, String amenityName, int quantity) {
+
+    public Dates(int listingId, int hostId, String type, float longitude, float latitude, String postalCode, String country, String city, String address, String date, boolean available, int price, int quantity, String amenityName, int amenityId) {
         this.listingId = listingId;
-        this.date = formatDate(date);
-        this.available = available;
-        this.price = price;
         this.hostId = hostId;
         this.type = type;
         this.longitude = longitude;
@@ -33,25 +31,16 @@ public class Dates {
         this.country = country;
         this.city = city;
         this.address = address;
-        this.amenityId = amenityId;
-        this.amenityName = amenityName;
+        this.date = date;
+        this.available = available;
+        this.price = price;
         this.quantity = quantity;
+        this.amenityName = amenityName;
+        this.amenityId = amenityId;
     }
 
     public int getListingId() {
         return listingId;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public boolean isAvailable() {
-        return available;
-    }
-
-    public int getPrice() {
-        return price;
     }
 
     public int getHostId() {
@@ -86,15 +75,27 @@ public class Dates {
         return address;
     }
 
-    public int getAmenityId() {
-        return amenityId;
+    public String getDate() {
+        return date;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 
     public String getAmenityName() {
         return amenityName;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getAmenityId() {
+        return amenityId;
     }
 }
