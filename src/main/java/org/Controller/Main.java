@@ -8,8 +8,13 @@ import org.Model.ListingAmenity;
 import org.Model.Booking;
 import org.Model.Rating;
 import org.Model.Availability;
+import org.Model.Dates;
 
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
+import org.Model.DateParser;
+import static org.Model.DateParser.formatDate;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
@@ -190,31 +195,60 @@ public class Main {
         		float longitude = scanner.nextFloat();
         		System.out.println("Please enter a latitude: ");
         		float latitude = scanner.nextFloat();
-        		System.out.println("Please enter a range: ");
-        		float range = scanner.nextFloat();
+        		System.out.println("Please enter a distance range (in km): ");
+        		float distance = scanner.nextFloat();
+				System.out.println("Please enter the minimum price (enter '0' to not set one): ");
+        		int minPrice = scanner.nextInt();
+				System.out.println("Please enter the maximum price (enter '0' to not set one): ");
+        		int maxPrice = scanner.nextInt();
+				System.out.println("Please enter a start date (use YYYY-MM-DD format, or enter 'n' to leave empty)");
+        		String startDate = scanner.next();
+				System.out.println("Please enter a start date (use YYYY-MM-DD format, or enter 'n' to leave empty)");
+        		String endDate = scanner.next();
+
+				if (startDate.equals("n")){
+					startDate = null;
+				} else {
+					startDate = formatDate(startDate);
+				}
+				if (endDate.equals("n")){
+					endDate = null;
+				} else {
+					endDate = formatDate(endDate);
+				}
+				
+				List<String> amenityList = new ArrayList<>();
+				while (true){
+					System.out.println("Please enter an amenity you would like to include (enter 'exit' to stop)");
+					String amenity = scanner.next();
+					if (amenity.equals("exit")){
+						break;
+					}
+					amenityList.add(amenity);
+				}
         		
+				List<Dates> searchListings = QueriesController.getListingWithinDistance(longitude, latitude, distance, false, true, startDate, endDate, minPrice, maxPrice, amenityList);
+				
         		while (true) {
 	        		System.out.println("Listings:\n--------");
-	        		
-	        		//Bring out a list of lists here
+	        		System.out.println(searchListings);
 	        		System.out.println("--------");
 	        		System.out.println("Please enter the listingId that you would like to rent, or '0' to exit:");
 	        		int listingId = scanner.nextInt();
-	        		
 	        		if (listingId == 0) {
 	        			System.out.println("Exiting...");
 	        			break;
 	        		} else {
 	        			Listing listing = ListingController.getListing(listingId);
 	        			System.out.println("Listing details\n--------------");
-	        			//Insert listing info
+	        			// Bring out listing details
 	        			System.out.println("Enter '1' to book, or any other number to leave:");
 	        			choice = scanner.nextInt();
 	        			if (choice == 1) {
 	        				System.out.println("Please enter a start date for your booking:");
-	        				String startDate = scanner.next();
+	        				String bookingStartDate = scanner.next();
 	        				System.out.println("Please enter an end date for your booking:");
-	        				String endDate = scanner.next();
+	        				String bookingEndDate = scanner.next();
 	        				//Check availability
 	        				System.out.println("Please enter your credit card number:");
 	        				String cardNumber = scanner.next();

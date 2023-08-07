@@ -25,6 +25,8 @@ public class QueriesController {
                     "INNER JOIN ListingAmenity ON listing.listingId = listingamenity.listingId " +
                     "INNER JOIN Amenity ON listingamenity.amenityId = amenity.amenityId";
             stmt.executeUpdate(sql);
+            stmt.execute(sql);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
