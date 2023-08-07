@@ -12,8 +12,9 @@ public class Booking {
     private String endDate;
     private int score;
     private String comment;
+    private String creditCardNumber;
 
-    public Booking(int bookingId, int listingId, int guestId, String startDate, String endDate, int score, String comment) {
+    public Booking(int bookingId, int listingId, int guestId, String startDate, String endDate, int score, String comment, String creditCardNumber) {
         this.bookingId = bookingId;
         this.listingId = listingId;
         this.guestId = guestId;
@@ -21,6 +22,7 @@ public class Booking {
         this.endDate = formatDate(startDate);
         this.score = score;
         this.comment = comment;
+        this.creditCardNumber = creditCardNumber;
     }
 
     public int getBookingId() {
@@ -71,6 +73,14 @@ public class Booking {
         this.comment = comment;
     }
 
+    public String getCreditCardNumber() {
+        return creditCardNumber;
+    }
+
+    public void setCreditCardNumber(String creditCardNumber) {
+        this.creditCardNumber = creditCardNumber;
+    }
+
     @Override
     public String toString() {
         return "Booking{" +
@@ -81,6 +91,7 @@ public class Booking {
                 ", endDate='" + endDate + '\'' +
                 ", score=" + score +
                 ", comment='" + comment + '\'' +
+                ", creditCardNumber='" + creditCardNumber + '\'' +
                 '}';
     }
 }

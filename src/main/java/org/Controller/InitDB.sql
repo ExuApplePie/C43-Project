@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `listing` (
   `postalCode` varchar(45) NOT NULL,
   `country` varchar(45) NOT NULL,
   `city` varchar(45) NOT NULL,
+  `address` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`listingId`),
   KEY `listingHID_idx` (`hostId`),
   CONSTRAINT `listingHID` FOREIGN KEY (`hostId`) REFERENCES `user` (`userId`)
@@ -44,14 +45,16 @@ CREATE TABLE IF NOT EXISTS `booking` (
   `guestId` int NOT NULL,
   `startDate` date NOT NULL,
   `endDate` date NOT NULL,
-  `score` int DEFAULT -1,
+  `score` int DEFAULT '-1',
   `comment` text,
+  `creditcard` varchar(45) NOT NULL,
   PRIMARY KEY (`bookingId`),
   KEY `bookingLID_idx` (`listingId`),
   KEY `bookingGID_idx` (`guestId`),
   CONSTRAINT `bookingGID` FOREIGN KEY (`guestId`) REFERENCES `user` (`userId`),
   CONSTRAINT `bookingLID` FOREIGN KEY (`listingId`) REFERENCES `listing` (`listingId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 @@@
 CREATE TABLE IF NOT EXISTS `listingamenity` (
   `listingId` int NOT NULL,
