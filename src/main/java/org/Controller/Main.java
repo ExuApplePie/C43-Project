@@ -19,14 +19,14 @@ public class Main {
         JdbcSqlServerConnection.connectToServer();
         JdbcSqlServerConnection.initDatabase();
         Scanner scanner = new Scanner(System.in);
-        
-        User user = Main.entry(scanner);
+
+		User user = Main.entry(scanner);
         if (user == null) {
         	JdbcSqlServerConnection.closeConnection();
         	return;
         }
         System.out.println("-------------------");
-        
+
         while (true) {
         	System.out.println("Please select an option, "+user.getName());
         	System.out.println("(1) Rent\n(2) Host\n(3) Rate\n(4) Exit");

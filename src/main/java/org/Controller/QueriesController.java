@@ -16,7 +16,7 @@ public class QueriesController {
         try {
             Statement stmt = conn.createStatement();
             String dropView = "DROP VIEW IF EXISTS dates";
-            stmt.execute(dropView);
+            stmt.executeUpdate(dropView);
             String sql = "CREATE VIEW dates AS " +
                     "SELECT Listing.*, Availability.date, Availability.available, Availability.price, Availability.listingId AS availability_listingId, listingamenity.quantity, amenity.name, amenity.amenityId AS amenity_id " +
                     "FROM Listing " +
@@ -24,7 +24,7 @@ public class QueriesController {
                     "ON Listing.listingId = Availability.listingId " +
                     "INNER JOIN ListingAmenity ON listing.listingId = listingamenity.listingId " +
                     "INNER JOIN Amenity ON listingamenity.amenityId = amenity.amenityId";
-            stmt.execute(sql);
+            stmt.executeUpdate(sql);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
