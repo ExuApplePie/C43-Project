@@ -114,10 +114,12 @@ public class QueriesController {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             List<Dates> dates = new ArrayList<>();
+            Dates prev = null;
             while (resultSet.next()) {
                 Dates temp = DatesController.getDates(resultSet.getInt(1));
-                if (temp != null) {
+                if (temp != null && (prev == null || temp.getListingId() != prev.getListingId())) {
                     dates.add(temp);
+                    prev = temp;
                 }
             }
             resultSet.close();
