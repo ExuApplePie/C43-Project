@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import opennlp.tools.chunker.*;
-import opennlp.tools.cmdline.parser.*;
 import opennlp.tools.postag.*;
 import opennlp.tools.tokenize.*;
 

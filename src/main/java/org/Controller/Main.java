@@ -150,7 +150,7 @@ public class Main {
     }
 
 	public static void deleteListing(User user, Scanner scanner) {
-		System.out.println("------Delete Listing-------");
+		System.out.println("------Cancel Listing-------");
     	System.out.println("Please enter the listingId:");
 		int listingId = scanner.nextInt();
 		Listing listing = ListingController.getListing(listingId);
@@ -162,8 +162,22 @@ public class Main {
 			System.out.println("Error: You are not the host of this listing.");
 			return;
 		}
-		ListingController.deleteListing(listingId);
-		System.out.println("Successfully deleted listing.");
+		System.out.println("Please enter the date you would like to cancel:");
+		scanner.nextLine();
+		String date = scanner.next();
+		date = formatDate(date);
+		Availability availability = AvailabilityController.getAvailability(listingId, date);
+		if (availability == null) {
+			System.out.println("Error: Invalid date.");
+			return;
+		}
+		if (availability.isAvailable() == false) {
+			System.out.println("Error: This date has already been booked, cannot cancel.");
+			return;
+		}
+		availability.setAvailable(false);
+		// Increment number of hostCancels here
+		System.out.println("Successfully cancelled listing for" + date +".");
 	}
     
     public static void editListing(User user, Scanner scanner) {
@@ -318,7 +332,7 @@ public class Main {
     	System.out.println("------Find and Book-------");
     	while (true) {
     		System.out.println("Select how you would like to locate a listing");
-        	System.out.println("(1) Longitude and Latitude\n(2) City\n(3) Country\n(4) Postal Code\n(5) Return");
+        	System.out.println("(1) Longitude and Latitude\n(2) Postal Code\n(3) Address\n(4) Return");
         	int choice = scanner.nextInt();
 
         	if (choice == 1) {
@@ -334,19 +348,11 @@ public class Main {
         		int maxPrice = scanner.nextInt();
 				System.out.println("Please enter a start date (use YYYY-MM-DD format, or enter 'n' to leave empty)");
         		String startDate = scanner.next();
-				System.out.println("Please enter a start date (use YYYY-MM-DD format, or enter 'n' to leave empty)");
+				System.out.println("Please enter an end date (use YYYY-MM-DD format, or enter 'n' to leave empty)");
         		String endDate = scanner.next();
 
-				if (startDate.equals("n")){
-					startDate = null;
-				} else {
-					startDate = formatDate(startDate);
-				}
-				if (endDate.equals("n")){
-					endDate = null;
-				} else {
-					endDate = formatDate(endDate);
-				}
+				startDate = Main.setDate(startDate);
+				endDate = Main.setDate(endDate);
 				
 				List<String> amenityList = new ArrayList<>();
 				while (true){
@@ -371,6 +377,10 @@ public class Main {
 						break;
 					} else {
 						Listing listing = ListingController.getListing(listingId);
+						if (listing == null) {
+							System.out.println("Error: Invalid listingId.");
+							continue;
+						}
 
 						System.out.println("Please enter a start date for your booking (in YYYY-MM-DD format):");
 						String bookingStartDate = scanner.next();
@@ -403,25 +413,7 @@ public class Main {
 						System.out.println("Please enter your credit card number:");
 						String cardNumber = scanner.next();
 						
-						try {
-							Date startDate2 = sdf.parse(bookingStartDate);
-							Date endDate2 = sdf.parse(bookingEndDate);
-
-							Calendar calendar = Calendar.getInstance();
-							calendar.setTime(startDate2);
-
-							while (!calendar.getTime().after(endDate2)) {
-								String currentDateStr = sdf.format(calendar.getTime());
-								String currentDate = formatDate(currentDateStr);
-								Availability availability = AvailabilityController.getAvailability(listingId,
-										currentDate);
-								availability.setAvailable(false);
-								AvailabilityController.editAvailability(availability);
-								calendar.add(Calendar.DAY_OF_MONTH, 1);
-							}
-						} catch (ParseException e) {
-							e.printStackTrace();
-						}
+						Main.bookDates(bookingStartDate, bookingEndDate, listingId);
 						
 						Booking booking = new Booking(0, listingId, user.getUserId(), bookingStartDate, bookingEndDate, 0, "", cardNumber, -1);
 						BookingController.addBooking(booking);
@@ -434,122 +426,181 @@ public class Main {
         		continue;
         	}
         	else if (choice == 2) {
-        		System.out.println("Please enter a city: ");
-        		String city = scanner.next();
-        		
-        		while (true) {
-	        		System.out.println("Listings:\n--------");
-	        		
-	        		//Bring out a list of lists here
-	        		System.out.println("--------");
-	        		System.out.println("Please enter the listingId that you would like to rent, or '0' to exit:");
-	        		int listingId = scanner.nextInt();
-	        		
-	        		if (listingId == 0) {
-	        			System.out.println("Exiting...");
-	        			break;
-	        		} else {
-	        			Listing listing = ListingController.getListing(listingId);
-	        			System.out.println("Listing details\n--------------");
-	        			//Insert listing info
-	        			System.out.println("Enter '1' to book, or any other number to leave:");
-	        			choice = scanner.nextInt();
-	        			if (choice == 1) {
-	        				System.out.println("Please enter a start date for your booking:");
-	        				String startDate = scanner.next();
-	        				System.out.println("Please enter an end date for your booking:");
-	        				String endDate = scanner.next();
-	        				//Check availability
-	        				System.out.println("Please enter your credit card number:");
-	        				String cardNumber = scanner.next();
-	        				//Add booking
-	        				System.out.println("Successfully booked!");
-	        				break;
-	        			} else {
-	        				System.out.println("Returning to list...");
-	        			}
-	        		}
-        		}
-        		continue;	
-        	}
-        	else if (choice == 3) {
-        		System.out.println("Please enter a country: ");
-        		String country = scanner.next();
-        		
-        		while (true) {
-	        		System.out.println("Listings:\n--------");
-	        		
-	        		//Bring out a list of lists here
-	        		System.out.println("--------");
-	        		System.out.println("Please enter the listingId that you would like to rent, or '0' to exit:");
-	        		int listingId = scanner.nextInt();
-	        		
-	        		if (listingId == 0) {
-	        			System.out.println("Exiting...");
-	        			break;
-	        		} else {
-	        			Listing listing = ListingController.getListing(listingId);
-	        			System.out.println("Listing details\n--------------");
-	        			//Insert listing info
-	        			System.out.println("Enter '1' to book, or any other number to leave:");
-	        			choice = scanner.nextInt();
-	        			if (choice == 1) {
-	        				System.out.println("Please enter a start date for your booking:");
-	        				String startDate = scanner.next();
-	        				System.out.println("Please enter an end date for your booking:");
-	        				String endDate = scanner.next();
-	        				//Check availability
-	        				System.out.println("Please enter your credit card number:");
-	        				String cardNumber = scanner.next();
-	        				//Add booking
-	        				System.out.println("Successfully booked!");
-	        				break;
-	        			} else {
-	        				System.out.println("Returning to list...");
-	        			}
-	        		}
-        		}
-        		continue;	
-        	}
-        	else if (choice == 4) {
-        		System.out.println("Please enter a postal code: ");
+        		System.out.println("Please enter a postal code (no spaces): ");
         		String postalCode = scanner.next();
+				System.out.println("Please enter the minimum price (enter '0' to not set one): ");
+        		int minPrice = scanner.nextInt();
+				System.out.println("Please enter the maximum price (enter '0' to not set one): ");
+        		int maxPrice = scanner.nextInt();
+				System.out.println("Please enter a start date (use YYYY-MM-DD format, or enter 'n' to leave empty)");
+        		String startDate = scanner.next();
+				System.out.println("Please enter an end date (use YYYY-MM-DD format, or enter 'n' to leave empty)");
+        		String endDate = scanner.next();
+        		
+        		startDate = Main.setDate(startDate);
+				endDate = Main.setDate(endDate);
+				
+				List<String> amenityList = new ArrayList<>();
+				while (true){
+					System.out.println("Please enter an amenity you would like to include (enter 'exit' to stop)");
+					String amenity = scanner.next();
+					if (amenity.equals("exit")){
+						break;
+					}
+					amenityList.add(amenity);
+				}
+        		
+				List<Dates> searchListings = QueriesController.getListingByPostalCode(postalCode, startDate, endDate, minPrice, maxPrice, amenityList);
+				
         		while (true) {
 	        		System.out.println("Listings:\n--------");
-	        		
-	        		//Bring out a list of lists here
+	        		Main.printDateList(searchListings);
 	        		System.out.println("--------");
 	        		System.out.println("Please enter the listingId that you would like to rent, or '0' to exit:");
 	        		int listingId = scanner.nextInt();
-	        		
 	        		if (listingId == 0) {
 	        			System.out.println("Exiting...");
-	        			break;
-	        		} else {
-	        			Listing listing = ListingController.getListing(listingId);
-	        			System.out.println("Listing details\n--------------");
-	        			//Insert listing info
-	        			System.out.println("Enter '1' to book, or any other number to leave:");
-	        			choice = scanner.nextInt();
-	        			if (choice == 1) {
-	        				System.out.println("Please enter a start date for your booking:");
-	        				String startDate = scanner.next();
-	        				System.out.println("Please enter an end date for your booking:");
-	        				String endDate = scanner.next();
-	        				//Check availability
-	        				System.out.println("Please enter your credit card number:");
-	        				String cardNumber = scanner.next();
-	        				//Add booking
-	        				System.out.println("Successfully booked!");
-	        				break;
-	        			} else {
-	        				System.out.println("Returning to list...");
-	        			}
-	        		}
+						break;
+					} else {
+						Listing listing = ListingController.getListing(listingId);
+						
+						if (listing == null) {
+							System.out.println("Error: Invalid listingId.");
+							continue;
+						}
+
+						System.out.println("Please enter a start date for your booking (in YYYY-MM-DD format):");
+						String bookingStartDate = scanner.next();
+						System.out.println("Please enter an end date for your booking (in YYYY-MM-DD format):");
+						String bookingEndDate = scanner.next();
+
+						// Check availability
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+						try {
+							Date startDate2 = sdf.parse(bookingStartDate);
+							Date endDate2 = sdf.parse(bookingEndDate);
+
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(startDate2);
+
+							while (!calendar.getTime().after(endDate2)) {
+								String currentDateStr = sdf.format(calendar.getTime());
+								String currentDate = formatDate(currentDateStr);
+								Availability availability = AvailabilityController.getAvailability(listingId, currentDate);
+								if (availability == null || availability.isAvailable() == false) {
+									System.out.println("Sorry, this listing is not available on " + currentDate);
+									return;
+								}
+								calendar.add(Calendar.DAY_OF_MONTH, 1);
+							}
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+
+						System.out.println("Please enter your credit card number:");
+						String cardNumber = scanner.next();
+						
+						Main.bookDates(bookingStartDate, bookingEndDate, listingId);
+						
+						Booking booking = new Booking(0, listingId, user.getUserId(), bookingStartDate, bookingEndDate, 0, "", cardNumber, -1);
+						BookingController.addBooking(booking);
+						System.out.println("Successfully booked! Your bookingId is: " + booking.getBookingId());
+						break;
+
+					}
         		}
+        		
         		continue;
         	}
-        	else if (choice == 5) {
+        	else if (choice == 3) {
+        		System.out.println("Please enter an address: ");
+        		scanner.nextLine();
+        		String address = scanner.nextLine();
+				System.out.println("Please enter the minimum price (enter '0' to not set one): ");
+        		int minPrice = scanner.nextInt();
+				System.out.println("Please enter the maximum price (enter '0' to not set one): ");
+        		int maxPrice = scanner.nextInt();
+				System.out.println("Please enter a start date (use YYYY-MM-DD format, or enter 'n' to leave empty)");
+        		String startDate = scanner.next();
+				System.out.println("Please enter an end date (use YYYY-MM-DD format, or enter 'n' to leave empty)");
+        		String endDate = scanner.next();
+        		
+        		startDate = Main.setDate(startDate);
+				endDate = Main.setDate(endDate);
+				
+				List<String> amenityList = new ArrayList<>();
+				while (true){
+					System.out.println("Please enter an amenity you would like to include (enter 'exit' to stop)");
+					String amenity = scanner.next();
+					if (amenity.equals("exit")){
+						break;
+					}
+					amenityList.add(amenity);
+				}
+        		
+				List<Dates> searchListings = QueriesController.getListingByAddress(address, startDate, endDate, minPrice, maxPrice, amenityList);
+				
+        		while (true) {
+	        		System.out.println("Listings:\n--------");
+	        		Main.printDateList(searchListings);
+	        		System.out.println("--------");
+	        		System.out.println("Please enter the listingId that you would like to rent, or '0' to exit:");
+	        		int listingId = scanner.nextInt();
+	        		if (listingId == 0) {
+	        			System.out.println("Exiting...");
+						break;
+					} else {
+						Listing listing = ListingController.getListing(listingId);
+						
+						if (listing == null) {
+							System.out.println("Error: Invalid listingId.");
+							continue;
+						}
+
+						System.out.println("Please enter a start date for your booking (in YYYY-MM-DD format):");
+						String bookingStartDate = scanner.next();
+						System.out.println("Please enter an end date for your booking (in YYYY-MM-DD format):");
+						String bookingEndDate = scanner.next();
+
+						// Check availability
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+						try {
+							Date startDate2 = sdf.parse(bookingStartDate);
+							Date endDate2 = sdf.parse(bookingEndDate);
+
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(startDate2);
+
+							while (!calendar.getTime().after(endDate2)) {
+								String currentDateStr = sdf.format(calendar.getTime());
+								String currentDate = formatDate(currentDateStr);
+								Availability availability = AvailabilityController.getAvailability(listingId, currentDate);
+								if (availability == null || availability.isAvailable() == false) {
+									System.out.println("Sorry, this listing is not available on " + currentDate);
+									return;
+								}
+								calendar.add(Calendar.DAY_OF_MONTH, 1);
+							}
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+
+						System.out.println("Please enter your credit card number:");
+						String cardNumber = scanner.next();
+						
+						Main.bookDates(bookingStartDate, bookingEndDate, listingId);
+						
+						Booking booking = new Booking(0, listingId, user.getUserId(), bookingStartDate, bookingEndDate, 0, "", cardNumber, -1);
+						BookingController.addBooking(booking);
+						System.out.println("Successfully booked! Your bookingId is: " + booking.getBookingId());
+						break;
+
+					}
+        		}
+        		
+        		continue;
+        	}
+        	else if (choice == 4) {
         		System.out.println("Returning to rent menu...");
         		break;
         	} else {
@@ -651,4 +702,35 @@ public class Main {
     	}
     }
     
+    static void bookDates(String bookingStartDate, String bookingEndDate, int listingId) {
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    	try {
+			Date startDate2 = sdf.parse(bookingStartDate);
+			Date endDate2 = sdf.parse(bookingEndDate);
+
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(startDate2);
+
+			while (!calendar.getTime().after(endDate2)) {
+				String currentDateStr = sdf.format(calendar.getTime());
+				String currentDate = formatDate(currentDateStr);
+				Availability availability = AvailabilityController.getAvailability(listingId,
+						currentDate);
+				availability.setAvailable(false);
+				AvailabilityController.editAvailability(availability);
+				calendar.add(Calendar.DAY_OF_MONTH, 1);
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    static String setDate(String date) {
+    	if (date.equals("n")){
+			date = null;
+		} else {
+			date = formatDate(date);
+		}
+    	return date;
+    }
 }
