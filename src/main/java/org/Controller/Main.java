@@ -888,7 +888,7 @@ public class Main {
     static void printDateList(List<Dates> searchListings) {
     	for (int i = 0 ; i < searchListings.size(); i++) {
     		Dates listing = searchListings.get(i);
-    		System.out.println("ListingID: " + listing.getListingId() + " | Address: " + listing.getAddress());
+    		System.out.println("ListingID: " + listing.getListingId() + " | Address: " + listing.getAddress() + " | Price: " + listing.getPrice() + " | Date: " + listing.getDate() + " | Amenities: " + listing.getAmenities() + " | Quantity: " + listing.getQuantities());
     	}
     }
     
