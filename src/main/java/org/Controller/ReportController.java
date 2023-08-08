@@ -190,8 +190,11 @@ public class ReportController {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             int[] hosts = new int[resultSet.getFetchSize()];
-            for (int i = 0; resultSet.next(); i++) {
-                hosts[i] = resultSet.getInt(1);
+            // check if size is 0 then don't run the loop
+            if (hosts.length > 0) {
+                for (int i = 0; resultSet.next(); i++) {
+                    hosts[i] = resultSet.getInt(1);
+                }
             }
             resultSet.close();
             statement.close();
@@ -264,13 +267,7 @@ public class ReportController {
 
     // gets the top 3 hosts with the most cancellations
     public static int[] getMostHostCancellations(String startDate, String endDate) {
-        String query = "SELECT cancelledBy, COUNT(*) as num_cancellations " +
-                "FROM booking " +
-                "WHERE startDate BETWEEN " + startDate + " AND " + endDate + " " +
-                "AND cancelledBy != guestId " +
-                "GROUP BY cancelledBy " +
-                "ORDER BY num_cancellations DESC " +
-                "LIMIT 3";
+        String query = "SELECT userId FROM user ORDER BY hostCancels DESC LIMIT 3";
         try {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
