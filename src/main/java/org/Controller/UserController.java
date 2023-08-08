@@ -1,11 +1,14 @@
 package org.Controller;
 
+import org.Model.Rating;
 import org.Model.User;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 
 // Crud operations for user table
@@ -57,5 +60,19 @@ public class UserController {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static List<Rating> getAllRatings(int userId) {
+    	List<Rating> ratings = new ArrayList<>();
+    	try {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM rating WHERE renterId = " + userId);
+            while (resultSet.next()) {
+                ratings.add(new Rating(resultSet.getInt(1), resultSet.getInt(2), resultSet.getInt(3), resultSet.getString(4), resultSet.getString(5)));
+            }
+        } catch (SQLException e) {
+            return null;
+        }
+    	return ratings;
     }
 }
