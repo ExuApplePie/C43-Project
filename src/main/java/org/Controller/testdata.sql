@@ -1,3 +1,5 @@
+SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+@@@
 INSERT INTO `assignment2`.`user`
 (`userId`, `occupation`, `address`, `DOB`, `SIN`, `name`)
 VALUES

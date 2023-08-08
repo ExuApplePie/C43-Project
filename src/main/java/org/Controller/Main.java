@@ -624,7 +624,7 @@ public class Main {
 					System.out.println("Invalid option, defaulting to sorting by descending price.");
 				}
 
-				List<Dates> searchListings = QueriesController.getListingByPostalCode(postalCode, sortDist, sortAscPrice, startDate, endDate, minPrice, maxPrice, amenityList);
+				List<Dates> searchListings = QueriesController.getListingByPostalCode(postalCode, sortAscPrice, startDate, endDate, minPrice, maxPrice, amenityList);
 
 				while (true) {
 					System.out.println("Listings:\n--------");
@@ -726,7 +726,7 @@ public class Main {
 					System.out.println("Invalid option, defaulting to sorting by descending price.");
 				}
 
-				List<Dates> searchListings = QueriesController.getListingByAddress(address, sortDist, sortAscPrice, startDate, endDate, minPrice, maxPrice, amenityList);
+				List<Dates> searchListings = QueriesController.getListingByAddress(address, sortAscPrice, startDate, endDate, minPrice, maxPrice, amenityList);
 
 				while (true) {
 					System.out.println("Listings:\n--------");
