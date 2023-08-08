@@ -7,7 +7,36 @@ import java.util.Scanner;
 
 public class JdbcSqlServerConnection {
     protected static Connection conn;
+
+    private static void createDatabase() {
+        try {
+            String url = "jdbc:mysql://localhost:3306/";
+            Connection connInit = DriverManager.getConnection(url, "root", "");
+            Statement stmt = connInit.createStatement();
+            String sql = "CREATE DATABASE IF NOT EXISTS assignment2";
+            stmt.executeUpdate(sql);
+            stmt.close();
+            connInit.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void dropDatabase() {
+        try {
+            String url = "jdbc:mysql://localhost:3306/";
+            Connection connInit = DriverManager.getConnection(url, "root", "");
+            Statement stmt = connInit.createStatement();
+            String sql = "DROP DATABASE IF EXISTS assignment2";
+            stmt.executeUpdate(sql);
+            stmt.close();
+            connInit.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static void connectToServer() {
+        createDatabase();
         String dbURL = "jdbc:mysql://localhost:3306/assignment2";
         String username="root";
         String password="";
@@ -27,9 +56,9 @@ public class JdbcSqlServerConnection {
         }
     }
 
-    public static void initDatabase() {
+    public static void runSqlScript(String filename) {
         try {
-            Scanner sc = new Scanner(new File("./src/main/java/org/Controller/InitDB.sql"));
+            Scanner sc = new Scanner(new File(filename));
             sc.useDelimiter("@@@");
             String str = "";
             while (sc.hasNext()) {

@@ -13,7 +13,7 @@ import org.Model.Dates;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
-import org.Model.DateParser;
+
 import static org.Model.DateParser.formatDate;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,7 +26,7 @@ public class Main {
 	
     public static void main(String[] args) {
         JdbcSqlServerConnection.connectToServer();
-        JdbcSqlServerConnection.initDatabase();
+        JdbcSqlServerConnection.runSqlScript("./src/main/java/org/Controller/InitDB.sql");
         Scanner scanner = new Scanner(System.in);
 		QueriesController.createDatesWithAmenitiesView();
 
@@ -470,7 +470,7 @@ public class Main {
 					amenityList.add(amenity);
 				}
         		
-				List<Dates> searchListings = QueriesController.getListingByPostalCode(postalCode, startDate, endDate, minPrice, maxPrice, amenityList);
+				List<Dates> searchListings = QueriesController.getListingByPostalCode(postalCode, true, false, startDate, endDate, minPrice, maxPrice, amenityList);
 				
         		while (true) {
 	        		System.out.println("Listings:\n--------");
@@ -558,7 +558,7 @@ public class Main {
 					amenityList.add(amenity);
 				}
         		
-				List<Dates> searchListings = QueriesController.getListingByAddress(address, startDate, endDate, minPrice, maxPrice, amenityList);
+				List<Dates> searchListings = QueriesController.getListingByAddress(address, false, true, startDate, endDate, minPrice, maxPrice, amenityList);
 				
         		while (true) {
 	        		System.out.println("Listings:\n--------");
