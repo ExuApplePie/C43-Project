@@ -1,11 +1,20 @@
 package org.Controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import opennlp.tools.chunker.*;
+import opennlp.tools.cmdline.parser.*;
+import opennlp.tools.postag.*;
+import opennlp.tools.tokenize.*;
 
 public class ReportController {
     static Connection conn = JdbcSqlServerConnection.conn;
@@ -251,7 +260,40 @@ public class ReportController {
         }
     }
 
-    public static String[] getNounPhrases(int listingId) {
-
+    public static List<String> getNounPhrases(int listingId) {
+        Tokenizer tokenizer = new SimpleTokenizer();
+        Map<String, Integer> nounPhraseCounts = new HashMap<>();
+        List<String> nounPhrases = new ArrayList<>();
+        try {
+            POSTaggerME posTagger = new POSTaggerME(new POSModel(new File("en-pos-maxent.bin")));
+            ChunkerME chunker = new ChunkerME(new ChunkerModel(new File("en-chunker.bin")));
+            ResultSet resultSet = conn.createStatement().executeQuery("SELECT comment FROM booking WHERE listingId = " + listingId);
+            while (resultSet.next()) {
+                String comment = resultSet.getString("comment");
+                String[] tokens = tokenizer.tokenize(comment);
+                String[] tags = posTagger.tag(tokens);
+                String[] chunks = chunker.chunk(tokens, tags);
+                for (int i = 0; i < chunks.length; i++) {
+                    if (chunks[i].equals("B-NP")) {
+                        StringBuilder sb = new StringBuilder();
+                        sb.append(tokens[i]);
+                        i++;
+                        while (i < chunks.length && chunks[i].equals("I-NP")) {
+                            sb.append(" ").append(tokens[i]);
+                            i++;
+                        }
+                        nounPhrases.add(sb.toString());
+                    }
+                }
+                for (String np : nounPhrases) {
+                    int count = nounPhraseCounts.getOrDefault(np, 0);
+                    nounPhraseCounts.put(np, count + 1);
+                }
+            }
+            resultSet.close();
+            return nounPhrases;
+        } catch (IOException | SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

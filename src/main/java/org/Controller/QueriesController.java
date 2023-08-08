@@ -93,17 +93,19 @@ public class QueriesController {
     }
 
 
-    public static List<Dates> getListingByPostalCode(String postalCode, String startDate, String endDate, int lowestPrice, int highestPrice, List<String> amenities) {
+    public static List<Dates> getListingByPostalCode(String postalCode, boolean orderByDistance, boolean orderByPriceAsc, String startDate, String endDate, int lowestPrice, int highestPrice, List<String> amenities) {
         createDatesWithAmenitiesView();
+        String orderBy = orderByDistance ? "DISTANCE" : (orderByPriceAsc ? "price ASC" : "price DESC");
         String queryFilter = generateAllQueries(startDate, endDate, lowestPrice, highestPrice, amenities);
-        String query = "SELECT listingId FROM dates WHERE LEFT(postalCode, 5) = LEFT('" + postalCode + "', 5) " + queryFilter;
+        String query = "SELECT listingId FROM dates WHERE available = 1 AND LEFT(postalCode, 5) = LEFT('" + postalCode + "', 5) " + queryFilter + " ORDER BY " + orderBy;
         return getDates(query);
     }
 
-    public static List<Dates> getListingByAddress(String address, String startDate, String endDate, int lowestPrice, int highestPrice, List<String> amenities) {
+    public static List<Dates> getListingByAddress(String address, boolean orderByDistance, boolean orderByPriceAsc, String startDate, String endDate, int lowestPrice, int highestPrice, List<String> amenities) {
         createDatesWithAmenitiesView();
+        String orderBy = orderByDistance ? "DISTANCE" : (orderByPriceAsc ? "price ASC" : "price DESC");
         String queryFilter = generateAllQueries(startDate, endDate, lowestPrice, highestPrice, amenities);
-        String query = "SELECT listingId FROM dates WHERE address = '" + address + "' " + queryFilter;
+        String query = "SELECT listingId FROM dates WHERE available = 1 AND address = '" + address + "' " + queryFilter + " ORDER BY " + orderBy;
         return getDates(query);
     }
 
