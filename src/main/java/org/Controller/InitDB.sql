@@ -48,13 +48,13 @@ CREATE TABLE IF NOT EXISTS `booking` (
   `score` int DEFAULT '-1',
   `comment` text,
   `creditcard` varchar(45) NOT NULL,
+  `cancelledBy` int NOT NULL DEFAULT '-1',
   PRIMARY KEY (`bookingId`),
   KEY `bookingLID_idx` (`listingId`),
   KEY `bookingGID_idx` (`guestId`),
   CONSTRAINT `bookingGID` FOREIGN KEY (`guestId`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `bookingLID` FOREIGN KEY (`listingId`) REFERENCES `listing` (`listingId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
 @@@
 CREATE TABLE IF NOT EXISTS `listingamenity` (
   `listingId` int NOT NULL,

@@ -13,8 +13,9 @@ public class Booking {
     private int score;
     private String comment;
     private String creditCardNumber;
+    private int cancelledBy; // -1 if not cancelled
 
-    public Booking(int bookingId, int listingId, int guestId, String startDate, String endDate, int score, String comment, String creditCardNumber) {
+    public Booking(int bookingId, int listingId, int guestId, String startDate, String endDate, int score, String comment, String creditCardNumber, int cancelledBy) {
         this.bookingId = bookingId;
         this.listingId = listingId;
         this.guestId = guestId;
@@ -23,6 +24,7 @@ public class Booking {
         this.score = score;
         this.comment = comment;
         this.creditCardNumber = creditCardNumber;
+        this.cancelledBy = cancelledBy;
     }
 
     public int getBookingId() {
@@ -81,6 +83,14 @@ public class Booking {
         this.creditCardNumber = creditCardNumber;
     }
 
+    public int getCancelledBy() {
+        return cancelledBy;
+    }
+
+    public void setCancelledBy(int cancelledBy) {
+        this.cancelledBy = cancelledBy;
+    }
+
     @Override
     public String toString() {
         return "Booking{" +
@@ -92,6 +102,7 @@ public class Booking {
                 ", score=" + score +
                 ", comment='" + comment + '\'' +
                 ", creditCardNumber='" + creditCardNumber + '\'' +
+                ", cancelledBy=" + cancelledBy +
                 '}';
     }
 }

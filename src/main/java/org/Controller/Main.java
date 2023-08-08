@@ -423,7 +423,7 @@ public class Main {
 							e.printStackTrace();
 						}
 						
-						Booking booking = new Booking(0, listingId, user.getUserId(), bookingStartDate, bookingEndDate, 0, "", cardNumber);
+						Booking booking = new Booking(0, listingId, user.getUserId(), bookingStartDate, bookingEndDate, 0, "", cardNumber, -1);
 						BookingController.addBooking(booking);
 						System.out.println("Successfully booked! Your bookingId is: " + booking.getBookingId());
 						break;
