@@ -10,7 +10,8 @@ VALUES
 (7, 'Journalist', '258 Oak St, Edmonton, AB', '1986-07-31', '789012345', 'Grace'),
 (8, 'Architect', '369 Pine St, Winnipeg, MB', '1989-08-31', '890123456', 'Helen'),
 (9, 'Dentist', '741 Elm St, Quebec City, QC', '1990-09-30', '901234567', 'Ivan'),
-(10, 'Electrician', '852 Main St, Hamilton, ON', '1987-10-31', '012345678', 'Jack');
+(10, 'Electrician', '852 Main St, Hamilton, ON', '1987-10-31', '012345678', 'Jack')
+ON DUPLICATE KEY UPDATE userId = VALUES(userId), occupation = VALUES(occupation), address = VALUES(address), DOB = VALUES(DOB), SIN = VALUES(SIN), name = VALUES(name);
 @@@
 INSERT INTO `assignment2`.`amenity`
 (`amenityId`,
@@ -39,7 +40,8 @@ VALUES
     (21, 'Beachfront'),
     (22, 'Waterfront'),
     (23, 'Smoke Alarm'),
-    (24, 'Carbon Monoxide Alarm');
+    (24, 'Carbon Monoxide Alarm')
+ON DUPLICATE KEY UPDATE amenityId = VALUES(amenityId), name = VALUES(name);
 @@@
 INSERT INTO `assignment2`.`listing`
 (`listingId`,
@@ -61,7 +63,8 @@ VALUES
     (7, 7, 'Cottage', -79.3832, 43.6532, 'M5H 2N2', 'Canada', 'Montreal', '700 Rue Sherbrooke Ouest'),
     (8, 8, 'Bungalow', -79.3832, 43.6532, 'M5H 2N2', 'Canada', 'Montreal', '800 Rue Sherbrooke Ouest'),
     (9, 9, 'Chalet', -79.3832 ,43.6532 ,'M5H 3C3','Canada','Montreal','900 Rue Sherbrooke Ouest'),
-    (10 ,10,'Farm stay' ,-79.3831 ,43.6531 ,'M5H 3C4','Canada','Montreal','1000 Rue Sherbrooke Ouest');
+    (10 ,10,'Farm stay' ,-79.3831 ,43.6531 ,'M5H 3C4','Canada','Montreal','1000 Rue Sherbrooke Ouest')
+ON DUPLICATE KEY UPDATE listingId = VALUES(listingId), hostId = VALUES(hostId), type = VALUES(type), longitude = VALUES(longitude), latitude = VALUES(latitude), postalCode = VALUES(postalCode), country = VALUES(country), city = VALUES(city), address = VALUES(address);
 @@@
 INSERT INTO `assignment2`.`availability`
 (`listingId`,
@@ -98,7 +101,8 @@ VALUES
     (9,'2023 -08 -03' ,0 ,900 ),
     (10,'2023 -08 -01' ,1 ,1000 ),
     (10,'2023 -08 -02' ,1 ,1000 ),
-    (10,'2023 -08 -03' ,0 ,1000 );
+    (10,'2023 -08 -03' ,0 ,1000 )
+ON DUPLICATE KEY UPDATE listingId = VALUES(listingId), date = VALUES(date), available = VALUES(available), price = VALUES(price);
 @@@
 INSERT INTO `assignment2`.`booking`
 (`bookingId`,
@@ -120,7 +124,8 @@ VALUES
     (7, 7, 7, '2023-08-07', '2023-08-11', NULL, NULL, '7890123456789012', -1),
     (8 ,8 ,8 ,'2023 -08 -08' ,'2023 -08 -12' ,NULL ,NULL ,'8901234567890123' ,-1 ),
     (9 ,9 ,9 ,'2023 -08 -09' ,'2023 -08 -13' ,NULL ,NULL ,'9012345678901234' ,-1 ),
-    (10 ,10 ,10 ,'2023 -08 -10' ,'2023 -08 -14' ,NULL ,NULL ,'0123456789012345' ,-1 );
+    (10 ,10 ,10 ,'2023 -08 -10' ,'2023 -08 -14' ,NULL ,NULL ,'0123456789012345' ,-1 )
+ON DUPLICATE KEY UPDATE bookingId = VALUES(bookingId), listingId = VALUES(listingId), guestId = VALUES(guestId), startDate = VALUES(startDate), endDate = VALUES(endDate), score = VALUES(score), comment = VALUES(comment), creditcard = VALUES(creditcard), cancelledBy = VALUES(cancelledBy);
 @@@
 INSERT INTO `assignment2`.`listingamenity`
 (`listingId`,
@@ -146,7 +151,8 @@ VALUES
     (4, 5, 4),
     (5 ,6 ,5 ),
     (6 ,7 ,6 ),
-    (7 ,8 ,7 );
+    (7 ,8 ,7 )
+ON DUPLICATE KEY UPDATE listingId = VALUES(listingId), amenityId = VALUES(amenityId), quantity = VALUES(quantity);
 @@@
 INSERT INTO `assignment2`.`rating`
 (`renterId`,
@@ -164,4 +170,5 @@ VALUES
     (7 ,7 ,4 ,'2023 -08 -07' ,'Nice guest' ),
     (8 ,8 ,3 ,'2023 -08 -08' ,'Okay guest' ),
     (9 ,9 ,2 ,'2023 -08 -09' ,'Not great' ),
-    (10 ,10 ,1 ,'2023 -08 -10' ,'Terrible !' );
+    (10 ,10 ,1 ,'2023 -08 -10' ,'Terrible !' )
+ON DUPLICATE KEY UPDATE renterId = VALUES(renterId), hostId = VALUES(hostId), score = VALUES(score), date = VALUES(date), comment = VALUES(comment);
