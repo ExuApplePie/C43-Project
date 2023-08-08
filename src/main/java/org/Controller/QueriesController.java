@@ -57,7 +57,7 @@ public class QueriesController {
     private static String generateAmenitiesQuery(List<String> amenities) {
         String amenitiesQuery = "";
         if (amenities != null && amenities.size() > 0) {
-            amenitiesQuery = "AND name IN (";
+            amenitiesQuery = "AND amenities IN (";
             for (int i = 0; i < amenities.size(); i++) {
                 amenitiesQuery += "'" + amenities.get(i) + "'";
                 if (i != amenities.size() - 1) {
