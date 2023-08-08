@@ -86,5 +86,20 @@ public class BookingController {
         }
         return booking;
     }
+    public static Booking findBookingByListing(int listingId, String date) {
+    	Booking booking = null;
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM booking WHERE listingId = '"+listingId+"' AND '"+date+"' BETWEEN startDate AND endDate;");
+            while (resultSet.next()) {
+                booking = new Booking(resultSet.getInt(1), resultSet.getInt(2), resultSet.getInt(3), resultSet.getString(4), resultSet.getString(5), resultSet.getInt(6), resultSet.getString(7), resultSet.getString(8), resultSet.getInt(9));
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            return null;
+        }
+        return booking;
+    }
     
 }

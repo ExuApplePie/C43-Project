@@ -278,7 +278,7 @@ public class Main {
     	while (true) {
     		System.out.println("------Host-------");
     		System.out.println("Please select an option");
-        	System.out.println("(1) Create new Listing\n(2) Cancel a Listing\n(3) Edit a Listing\n(4) Exit");
+        	System.out.println("(1) Create new Listing\n(2) Cancel a Listing\n(3) Edit a Listing Price\n(4) Exit");
         	int choice = scanner.nextInt();
         	if (choice == 1) {
         		Main.createListing(user, scanner);
@@ -315,18 +315,20 @@ public class Main {
 			System.out.println("Error: Invalid date.");
 			return;
 		}
-		if (availability.isAvailable() == false) {
-			System.out.println("Error: This date has already been booked, cannot cancel.");
-			return;
+		Booking booking = BookingController.findBookingByListing(listingId, date);
+		if (booking != null) {
+			booking.setCancelledBy(user.getUserId());
+			BookingController.editBooking(booking);
 		}
 		availability.setAvailable(false);
+		AvailabilityController.editAvailability(availability);
 		user.setHostCancelCount(user.getHostCancelCount() + 1);
 		UserController.editUser(user);
 		System.out.println("Successfully cancelled listing for" + date +".");
 	}
     
     public static void editListing(User user, Scanner scanner) {
-    	System.out.println("------Edit Listing-------");
+    	System.out.println("------Edit Listing Price-------");
     	System.out.println("Please enter the listingId:");
 		int listingId = scanner.nextInt();
 		Listing listing = ListingController.getListing(listingId);
@@ -338,25 +340,23 @@ public class Main {
 			System.out.println("Error: You are not the host of this listing.");
 			return;
 		}
-		System.out.println("Listing found. Please update the listing information.");
-		System.out.println("------Create New Listing-------");
-    	System.out.println("Please enter the type of building:");
-		String type = scanner.next();
-		System.out.println("Please enter the longitude of the listing:");
-		float longitude = scanner.nextFloat();
-		System.out.println("Please enter the latitude of the listing:");
-		float latitude = scanner.nextFloat();
-		System.out.println("Please enter the postal code of the listing:");
+		System.out.println("Listing found. Please enter the date you would like to change (YYYY-MM-DD format).");
 		scanner.nextLine();
-		String postalCode = scanner.nextLine();
-		System.out.println("Please enter the country of the listing:");
-		String country = scanner.nextLine();
-		System.out.println("Please enter the city of the listing:");
-		String city = scanner.nextLine();
-		System.out.println("Please enter the address of the listing:");
-		String address = scanner.nextLine();
-		Listing newListing = new Listing(0, user.getUserId(), type, longitude, latitude, postalCode, country, city, address);
-		ListingController.editListing(newListing);
+		String date = scanner.next();
+		date = formatDate(date);
+		Availability availability = AvailabilityController.getAvailability(listingId, date);
+		if (availability == null) {
+			System.out.println("Error: Invalid date.");
+			return;
+		}
+		if (availability.isAvailable() == false) {
+			System.out.println("Error: This date has already been booked, cannot change price.");
+			return;
+		}
+		System.out.println("Please enter the new price for this date:");
+		int price = scanner.nextInt();
+		availability.setPrice(price);
+		AvailabilityController.editAvailability(availability);
 		System.out.println("Successfully updated listing!");
     }
     
@@ -832,7 +832,8 @@ public class Main {
 		}
 		user.setGuestCancels(user.getGuestCancels() + 1);
 		UserController.editUser(user);
-		BookingController.deleteBooking(bookingId);
+		booking.setCancelledBy(user.getUserId());
+		BookingController.editBooking(booking);
 		System.out.println("Successfully cancelled booking.");
 		return;
     }
