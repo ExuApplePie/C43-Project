@@ -869,9 +869,9 @@ public class Main {
 			} else if (choice == 2) {
 				System.out.println("Sign Up\n--------------");
 				scanner.nextLine();
-				System.out.println("Please enter your occupation (all lowercase): ");
+				System.out.println("Please enter your occupation: ");
 				String occupation = scanner.nextLine();
-				System.out.println("Please enter your address (all lowercase): ");
+				System.out.println("Please enter your address: ");
 				String address = scanner.nextLine();
 				System.out.println("Please enter your date of birth (in YYYY-MM-DD format): ");
 				String dob = scanner.nextLine();
