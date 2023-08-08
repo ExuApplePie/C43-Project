@@ -23,8 +23,7 @@ public class QueriesController {
                     "INNER JOIN Availability " +
                     "ON Listing.listingId = Availability.listingId " +
                     "INNER JOIN ListingAmenity ON Listing.listingId = ListingAmenity.listingId " +
-                    "INNER JOIN Amenity ON ListingAmenity.amenityId = Amenity.amenityId " +
-                    "GROUP BY Availability.date";
+                    "INNER JOIN Amenity ON ListingAmenity.amenityId = Amenity.amenityId";
             stmt.executeUpdate(sql);
             stmt.close();
         } catch (SQLException e) {
