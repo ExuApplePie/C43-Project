@@ -18,13 +18,13 @@ public class QueriesController {
             String dropView = "DROP VIEW IF EXISTS dates";
             stmt.executeUpdate(dropView);
             String sql = "CREATE VIEW dates AS " +
-                    "SELECT Listing.*, Availability.date, Availability.available, Availability.price, Availability.listingId AS availability_listingId, GROUP_CONCAT(amenity.name) AS amenities, GROUP_CONCAT(ListingAmenity.quantity) AS quantities " +
+                    "SELECT Listing.*, Availability.date, Availability.available, Availability.price, Availability.listingId AS availability_listingId, GROUP_CONCAT(DISTINCT amenity.name) AS amenities, GROUP_CONCAT(DISTINCT ListingAmenity.quantity) AS quantities " +
                     "FROM Listing " +
                     "INNER JOIN Availability " +
                     "ON Listing.listingId = Availability.listingId " +
                     "INNER JOIN ListingAmenity ON Listing.listingId = ListingAmenity.listingId " +
                     "INNER JOIN Amenity ON ListingAmenity.amenityId = Amenity.amenityId " +
-                    "GROUP BY Listing.listingId, Availability.date";
+                    "GROUP BY Availability.date";
             stmt.executeUpdate(sql);
             stmt.close();
         } catch (SQLException e) {
