@@ -39,7 +39,7 @@ public class Main {
 
         while (true) {
         	System.out.println("Please select an option, "+user.getName());
-        	System.out.println("(1) Rent\n(2) Host\n(3) Rate\n(4) Exit");
+        	System.out.println("(1) Rent\n(2) Host\n(3) Rate\n(4) Report\n(4) Exit");
         	int choice = scanner.nextInt();
 
         	if (choice == 1) {
@@ -52,6 +52,9 @@ public class Main {
         		Main.rate(user, scanner);
         	}
         	else if (choice == 4) {
+        		Main.rate(user, scanner);
+        	}
+        	else if (choice == 5) {
         		System.out.println("Thank you for using WindNbN.");
         		System.out.println("Exiting...");
         		break;
@@ -61,6 +64,29 @@ public class Main {
         }
         scanner.close();
         JdbcSqlServerConnection.closeConnection();
+    }
+    
+    public static void report(User user, Scanner scanner) {
+    	System.out.println("------Report-------");
+    	System.out.println("Please select an option");
+    	System.out.println("(1) Total Bookings in Date Range within a City\n(2) Total Bookings in Date Range via Zip Code\n(3) Total Listings per Country\n(4) Total Listings per Country and City");
+    	System.out.println("(5) Total Listings per Country, City, and Postal Code\n(6) Rank Hosts\n(7) Rank Hosts by City\n(7) Report Hosts with >10% Listings");
+    	System.out.println("(8) Rank Hosts and Renters by Cancellations\n(9) Popular Noun Phrases");
+    	int choice = scanner.nextInt();
+    	if (choice == 1) {
+    		Main.rateHost(user, scanner);
+    		return;
+    	} else if (choice == 2) {
+    		Main.rateRenter(user, scanner);
+    		return;
+    		
+    	} else if (choice == 2) {
+    		Main.checkRating(user, scanner);
+    		return;
+    	} else if (choice == 4) {
+    		System.out.println("Returning to menu...");
+    		return;
+    	}
     }
     
     public static void rate(User user, Scanner scanner) {
