@@ -91,17 +91,17 @@ VALUES
     (6, '2023-08-02', 1, 600),
     (6, '2023-08-03', 0, 600),
     (7, '2023-08-01', 1, 700),
-    (7,'2023 -08 -02' ,1 ,700 ),
-    (7,'2023 -08 -03' ,0 ,700 ),
-    (8,'2023 -08 -01' ,1 ,800 ),
-    (8,'2023 -08 -02' ,1 ,800 ),
-    (8,'2023 -08 -03' ,0 ,800 ),
-    (9,'2023 -08 -01' ,1 ,900 ),
-    (9,'2023 -08 -02' ,1 ,900 ),
-    (9,'2023 -08 -03' ,0 ,900 ),
-    (10,'2023 -08 -01' ,1 ,1000 ),
-    (10,'2023 -08 -02' ,1 ,1000 ),
-    (10,'2023 -08 -03' ,0 ,1000 )
+    (7,'2023-08-02' ,1 ,700 ),
+    (7,'2023-08-03' ,0 ,700 ),
+    (8,'2023-08-01' ,1 ,800 ),
+    (8,'2023-08-02' ,1 ,800 ),
+    (8,'2023-08-03' ,0 ,800 ),
+    (9,'2023-08-01' ,1 ,900 ),
+    (9,'2023-08-02' ,1 ,900 ),
+    (9,'2023-08-03' ,0 ,900 ),
+    (10,'2023-08-01' ,1 ,1000 ),
+    (10,'2023-08-02' ,1 ,1000 ),
+    (10,'2023-08-03' ,0 ,1000 )
 ON DUPLICATE KEY UPDATE listingId = VALUES(listingId), date = VALUES(date), available = VALUES(available), price = VALUES(price);
 @@@
 INSERT INTO `assignment2`.`booking`
@@ -122,9 +122,9 @@ VALUES
     (5, 5, 5, '2023-08-05', '2023-08-09', 1, 'Terrible!', '5678901234567890', -1),
     (6, 6, 6, '2023-08-06', '2023-08-10', NULL, NULL, '6789012345678901', -1),
     (7, 7, 7, '2023-08-07', '2023-08-11', NULL, NULL, '7890123456789012', -1),
-    (8 ,8 ,8 ,'2023 -08 -08' ,'2023 -08 -12' ,NULL ,NULL ,'8901234567890123' ,-1 ),
-    (9 ,9 ,9 ,'2023 -08 -09' ,'2023 -08 -13' ,NULL ,NULL ,'9012345678901234' ,-1 ),
-    (10 ,10 ,10 ,'2023 -08 -10' ,'2023 -08 -14' ,NULL ,NULL ,'0123456789012345' ,-1 )
+    (8 ,8 ,8 ,'2023-08-08' ,'2023-08-12' ,NULL ,NULL ,'8901234567890123' ,-1 ),
+    (9 ,9 ,9 ,'2023-08-09' ,'2023-08-13' ,NULL ,NULL ,'9012345678901234' ,-1 ),
+    (10 ,10 ,10 ,'2023-08-10' ,'2023-08-14' ,NULL ,NULL ,'0123456789012345' ,-1 )
 ON DUPLICATE KEY UPDATE bookingId = VALUES(bookingId), listingId = VALUES(listingId), guestId = VALUES(guestId), startDate = VALUES(startDate), endDate = VALUES(endDate), score = VALUES(score), comment = VALUES(comment), creditcard = VALUES(creditcard), cancelledBy = VALUES(cancelledBy);
 @@@
 INSERT INTO `assignment2`.`listingamenity`
@@ -166,9 +166,9 @@ VALUES
     (3, 3, 3, '2023-08-03', 'Okay guest'),
     (4, 4, 2, '2023-08-04', 'Not great'),
     (5, 5, 1, '2023-08-05', 'Terrible!'),
-    (6 ,6 ,5 ,'2023 -08 -06' ,'Great guest !' ),
-    (7 ,7 ,4 ,'2023 -08 -07' ,'Nice guest' ),
-    (8 ,8 ,3 ,'2023 -08 -08' ,'Okay guest' ),
-    (9 ,9 ,2 ,'2023 -08 -09' ,'Not great' ),
-    (10 ,10 ,1 ,'2023 -08 -10' ,'Terrible !' )
+    (6 ,6 ,5 ,'2023-08-06' ,'Great guest !' ),
+    (7 ,7 ,4 ,'2023-08-07' ,'Nice guest' ),
+    (8 ,8 ,3 ,'2023-08-08' ,'Okay guest' ),
+    (9 ,9 ,2 ,'2023-08-09' ,'Not great' ),
+    (10 ,10 ,1 ,'2023-08-10' ,'Terrible !' )
 ON DUPLICATE KEY UPDATE renterId = VALUES(renterId), hostId = VALUES(hostId), score = VALUES(score), date = VALUES(date), comment = VALUES(comment);
