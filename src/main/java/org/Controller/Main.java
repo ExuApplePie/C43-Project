@@ -868,6 +868,7 @@ public class Main {
 				}
 			} else if (choice == 2) {
 				System.out.println("Sign Up\n--------------");
+				scanner.nextLine();
 				System.out.println("Please enter your occupation (all lowercase): ");
 				String occupation = scanner.nextLine();
 				System.out.println("Please enter your address (all lowercase): ");
