@@ -586,6 +586,7 @@ public class Main {
 				continue;
 			}
 			else if (choice == 2) {
+				scanner.nextLine();
 				System.out.println("Please enter a postal code: ");
 				String postalCode = scanner.nextLine();
 				System.out.println("Please enter the minimum price (enter '0' to not set one): ");
