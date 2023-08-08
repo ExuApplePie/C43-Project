@@ -393,7 +393,7 @@ public class Main {
 
 		while (true) {
 			System.out.println("Please enter an amenity in the building, or enter \"exit\" to stop (enter '_' instead of spaces):");
-			System.out.println("Consider adding the following amenities: 'bedroom', 'bathroom', 'kitchen', 'pool', 'wifi'");
+			System.out.println("Consider adding the following amenities: 'Bedroom', 'Bathroom', 'Kitchen', 'Pool', 'Wifi'");
 			String amenityName = scanner.next();
 			if (amenityName.equals("exit")) {
 				break;
@@ -586,8 +586,8 @@ public class Main {
 				continue;
 			}
 			else if (choice == 2) {
-				System.out.println("Please enter a postal code (no spaces): ");
-				String postalCode = scanner.next();
+				System.out.println("Please enter a postal code: ");
+				String postalCode = scanner.nextLine();
 				System.out.println("Please enter the minimum price (enter '0' to not set one): ");
 				int minPrice = scanner.nextInt();
 				System.out.println("Please enter the maximum price (enter '0' to not set one): ");
@@ -868,15 +868,16 @@ public class Main {
 			} else if (choice == 2) {
 				System.out.println("Sign Up\n--------------");
 				System.out.println("Please enter your occupation (all lowercase): ");
-				String occupation = scanner.next();
+				String occupation = scanner.nextLine();
 				System.out.println("Please enter your address (all lowercase): ");
-				String address = scanner.next();
+				String address = scanner.nextLine();
 				System.out.println("Please enter your date of birth (in YYYY-MM-DD format): ");
-				String dob = scanner.next();
+				String dob = scanner.nextLine();
 				System.out.println("Please enter your SIN (numerical only, no special characters): ");
 				int sin = scanner.nextInt();
 				System.out.println("Please enter your name (this will be your display name): ");
-				String name = scanner.next();
+				scanner.nextLine();
+				String name = scanner.nextLine();
 				User newUser = new User(0, occupation, address, dob, sin, name, 0, 0);
 				UserController.addUser(newUser);
 				System.out.println("Registration Complete! Your UserId is: " + newUser.getUserId());
