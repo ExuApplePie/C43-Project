@@ -688,7 +688,6 @@ public class Main {
 				continue;
 			}
 			else if (choice == 3) {
-				scanner.nextLine();
 				System.out.println("Please enter an address: ");
 				scanner.nextLine();
 				String address = scanner.nextLine();
