@@ -14,6 +14,47 @@ import opennlp.tools.tokenize.*;
 
 public class ReportController {
     static Connection conn = JdbcSqlServerConnection.conn;
+    
+    public static int getTotalBookings(String city, String startDate, String endDate) {
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS total_bookings "
+                    + "FROM booking "
+                    + "INNER JOIN listing ON booking.listingId = listing.listingId "
+                    + "WHERE booking.startDate BETWEEN '" + startDate + "' AND '" + endDate + "' "
+                    + "AND listing.city = '" + city + "'");
+            if (resultSet.next()) {
+                return resultSet.getInt("total_bookings");
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            return 0;
+        }
+        return 0;
+    }
+    
+    public static int getTotalBookingsByZip(String city, String zipCode, String startDate, String endDate) {
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS total_bookings "
+                    + "FROM booking "
+                    + "INNER JOIN listing ON booking.listingId = listing.listingId "
+                    + "WHERE booking.startDate BETWEEN '" + startDate + "' AND '" + endDate + "' "
+                    + "AND listing.city = '" + city + "' "
+                    + "AND listing.postalCode = '" + zipCode + "'");
+            if (resultSet.next()) {
+                return resultSet.getInt("total_bookings");
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            return 0;
+        }
+        return 0;
+    }
+
+    
     public static int getTotalListings(String country, String city, String postalCode) {
         try {
             Statement statement = conn.createStatement();
@@ -247,7 +288,7 @@ public class ReportController {
 
     // gets the top 3 guests with the most cancellations
     public static int[] getMostGuestCancellations(String startDate, String endDate) {
-        String query = "SELECT userId FROM user ORDER BY hostCancels DESC LIMIT 3";
+        String query = "SELECT userId FROM user ORDER BY guestCancels DESC LIMIT 3";
         try {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);

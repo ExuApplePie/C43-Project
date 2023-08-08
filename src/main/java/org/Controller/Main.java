@@ -39,7 +39,7 @@ public class Main {
 
         while (true) {
         	System.out.println("Please select an option, "+user.getName());
-        	System.out.println("(1) Rent\n(2) Host\n(3) Rate\n(4) Report\n(4) Exit");
+        	System.out.println("(1) Rent\n(2) Host\n(3) Rate\n(4) Report\n(5) Exit");
         	int choice = scanner.nextInt();
 
         	if (choice == 1) {
@@ -52,7 +52,7 @@ public class Main {
         		Main.rate(user, scanner);
         	}
         	else if (choice == 4) {
-        		Main.rate(user, scanner);
+        		Main.report(user, scanner);
         	}
         	else if (choice == 5) {
         		System.out.println("Thank you for using WindNbN.");
@@ -70,23 +70,121 @@ public class Main {
     	System.out.println("------Report-------");
     	System.out.println("Please select an option");
     	System.out.println("(1) Total Bookings in Date Range within a City\n(2) Total Bookings in Date Range via Zip Code\n(3) Total Listings per Country\n(4) Total Listings per Country and City");
-    	System.out.println("(5) Total Listings per Country, City, and Postal Code\n(6) Rank Hosts\n(7) Rank Hosts by City\n(7) Report Hosts with >10% Listings");
+    	System.out.println("(5) Total Listings per Country, City, and Postal Code\n(6) Rank Hosts by Country\n(7) Rank Hosts by Country and City");
     	System.out.println("(8) Rank Hosts and Renters by Cancellations\n(9) Popular Noun Phrases");
+    	System.out.println("Enter any other number to exit.");
     	int choice = scanner.nextInt();
+    	scanner.nextLine();
     	if (choice == 1) {
-    		Main.rateHost(user, scanner);
-    		return;
+    		System.out.println("Total Bookings in Date Range within a City");
+    		System.out.println("-------");
+    		System.out.println("Enter a city:");
+    		String city = scanner.nextLine();
+    		System.out.println("Enter a start date:");
+    		String startDate = scanner.nextLine();
+    		System.out.println("Enter an end date:");
+    		String endDate = scanner.nextLine();
+    		startDate = formatDate(startDate);
+    		endDate = formatDate(endDate);
+    		System.out.println("Total Bookings in "+city+": "+ReportController.getTotalBookings(city, startDate, endDate));
     	} else if (choice == 2) {
-    		Main.rateRenter(user, scanner);
-    		return;
-    		
-    	} else if (choice == 2) {
-    		Main.checkRating(user, scanner);
-    		return;
+    		System.out.println("Total Bookings in Date Range via Zip Code");
+    		System.out.println("-------");
+    		System.out.println("Enter a city:");
+    		String city = scanner.nextLine();
+    		System.out.println("Enter a zip code:");
+    		String zipCode = scanner.nextLine();
+    		System.out.println("Enter a start date:");
+    		String startDate = scanner.nextLine();
+    		System.out.println("Enter an end date:");
+    		String endDate = scanner.nextLine();
+    		startDate = formatDate(startDate);
+    		endDate = formatDate(endDate);
+    		System.out.println("Total Bookings in "+city+": "+ReportController.getTotalBookingsByZip(city, zipCode, startDate, endDate));
+    	} else if (choice == 3) {
+    		System.out.println("Total Listings per Country");
+    		System.out.println("-------");
+    		System.out.println("Enter a country:");
+    		String country = scanner.nextLine();
+    		System.out.println("Listings: " + ReportController.getTotalListings(country));
+    		ReportController.getCommercialHosts(country, scanner);
     	} else if (choice == 4) {
+    		System.out.println("Total Listings per Country and City");
+    		System.out.println("-------");
+    		System.out.println("Enter a country:");
+    		String country = scanner.nextLine();
+    		System.out.println("Enter a city:");
+    		String city = scanner.nextLine();
+    		System.out.println("Listings: " + ReportController.getTotalListings(country, city));
+    		ReportController.getCommercialHosts(country, city, scanner);
+    	} else if (choice == 5) {
+    		System.out.println("Total Listings per Country, City, and Postal Code");
+    		System.out.println("-------");
+    		System.out.println("Enter a country:");
+    		String country = scanner.nextLine();
+    		System.out.println("Enter a city:");
+    		String city = scanner.nextLine();
+    		System.out.println("Enter a postal code:");
+    		String postalCode = scanner.nextLine();
+    		System.out.println("Listings: " + ReportController.getTotalListings(country, city, postalCode));
+    		ReportController.getCommercialHosts(country, city, scanner);
+    	} else if (choice == 6) {
+    		System.out.println("Rank Hosts by Country");
+    		System.out.println("-------");
+    		System.out.println("Enter a country:");
+    		String country = scanner.nextLine();
+    		System.out.println("Hosts: ");
+    		List<int[]> hosts = ReportController.getHostsByCountry(country);
+    		for (int[] hostInfo : hosts) {
+    		    int hostId = hostInfo[0];
+    		    int numListings = hostInfo[1];
+    		    System.out.println("Host ID: " + hostId + ", Number of Listings: " + numListings);
+    		}
+    		ReportController.getCommercialHosts(country, scanner);
+    	} else if (choice == 7) {
+    		System.out.println("Rank Hosts by Country and City");
+    		System.out.println("-------");
+    		System.out.println("Enter a country:");
+    		String country = scanner.nextLine();
+    		System.out.println("Enter a city:");
+    		String city = scanner.nextLine();
+    		System.out.println("Hosts: ");
+    		List<int[]> hosts = ReportController.getHostsByCity(country, city);
+    		for (int[] hostInfo : hosts) {
+    		    int hostId = hostInfo[0];
+    		    int numListings = hostInfo[1];
+    		    System.out.println("Host ID: " + hostId + ", Number of Listings: " + numListings);
+    		}
+    		ReportController.getCommercialHosts(country, city, scanner);
+    		
+    	} else if (choice == 8) {
+    		System.out.println("Rank Hosts and Renters by Cancellations");
+    		System.out.println("-------");
+    		System.out.println("Enter a start date:");
+    		String startDate = scanner.nextLine();
+    		System.out.println("Enter an end date:");
+    		String endDate = scanner.nextLine();
+    		startDate = formatDate(startDate);
+    		endDate = formatDate(endDate);
+    		int[] hosts = ReportController.getMostHostCancellations(startDate, endDate);
+    		int[] guests = ReportController.getMostGuestCancellations(startDate, endDate);
+    		System.out.println("Most Host Cancellations: "+hosts);
+    		System.out.println("Most Renter Cancellations: "+guests);
+    	} else if (choice == 9) {
+    		System.out.println("Popular Noun Phrases");
+    		System.out.println("-------");
+    		System.out.println("Enter a listingId:");
+    		int listingId = scanner.nextInt();
+    		List<String> nouns = ReportController.getNounPhrases(listingId);
+    		System.out.println("Popular Nouns:");
+    		for (String noun : nouns) {
+                System.out.println(noun);
+            }
+    	} else  {
     		System.out.println("Returning to menu...");
     		return;
-    	}
+    	} 
+    	
     }
     
     public static void rate(User user, Scanner scanner) {
@@ -222,7 +320,8 @@ public class Main {
 			return;
 		}
 		availability.setAvailable(false);
-		// Increment number of hostCancels here
+		user.setHostCancelCount(user.getHostCancelCount() + 1);
+		UserController.editUser(user);
 		System.out.println("Successfully cancelled listing for" + date +".");
 	}
     
@@ -409,8 +508,22 @@ public class Main {
 					}
 					amenityList.add(amenity);
 				}
+				
+				System.out.println("Would you like to sort by (1) distance, (2) ascending price, or (3) descending price?");
+				int sortOption = scanner.nextInt();
+				boolean sortDist = false;
+				boolean sortAscPrice = false;
+				if (sortOption == 1) {
+					sortDist = true;
+				} else if (sortOption == 2) {
+					sortAscPrice = true;
+				} else if (sortOption == 3) {
+					sortAscPrice = false;
+				} else {
+					System.out.println("Invalid option, defaulting to sorting by descending price.");
+				}
         		
-				List<Dates> searchListings = QueriesController.getListingWithinDistance(longitude, latitude, distance, false, true, startDate, endDate, minPrice, maxPrice, amenityList);
+				List<Dates> searchListings = QueriesController.getListingWithinDistance(longitude, latitude, distance, sortDist, sortAscPrice, startDate, endDate, minPrice, maxPrice, amenityList);
 				
         		while (true) {
 	        		System.out.println("Listings:\n--------");
@@ -495,8 +608,22 @@ public class Main {
 					}
 					amenityList.add(amenity);
 				}
-        		
-				List<Dates> searchListings = QueriesController.getListingByPostalCode(postalCode, startDate, endDate, minPrice, maxPrice, amenityList);
+				
+				System.out.println("Would you like to sort by (1) distance, (2) ascending price, or (3) descending price?");
+				int sortOption = scanner.nextInt();
+				boolean sortDist = false;
+				boolean sortAscPrice = false;
+				if (sortOption == 1) {
+					sortDist = true;
+				} else if (sortOption == 2) {
+					sortAscPrice = true;
+				} else if (sortOption == 3) {
+					sortAscPrice = false;
+				} else {
+					System.out.println("Invalid option, defaulting to sorting by descending price.");
+				}
+				
+				List<Dates> searchListings = QueriesController.getListingByPostalCode(postalCode, sortDist, sortAscPrice, startDate, endDate, minPrice, maxPrice, amenityList);
 				
         		while (true) {
 	        		System.out.println("Listings:\n--------");
@@ -583,8 +710,22 @@ public class Main {
 					}
 					amenityList.add(amenity);
 				}
+				
+				System.out.println("Would you like to sort by (1) distance, (2) ascending price, or (3) descending price?");
+				int sortOption = scanner.nextInt();
+				boolean sortDist = false;
+				boolean sortAscPrice = false;
+				if (sortOption == 1) {
+					sortDist = true;
+				} else if (sortOption == 2) {
+					sortAscPrice = true;
+				} else if (sortOption == 3) {
+					sortAscPrice = false;
+				} else {
+					System.out.println("Invalid option, defaulting to sorting by descending price.");
+				}
         		
-				List<Dates> searchListings = QueriesController.getListingByAddress(address, startDate, endDate, minPrice, maxPrice, amenityList);
+				List<Dates> searchListings = QueriesController.getListingByAddress(address, sortDist, sortAscPrice, startDate, endDate, minPrice, maxPrice, amenityList);
 				
         		while (true) {
 	        		System.out.println("Listings:\n--------");
