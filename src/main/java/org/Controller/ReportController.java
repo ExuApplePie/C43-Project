@@ -252,6 +252,6 @@ public class ReportController {
     }
 
     public static String[] getNounPhrases(int listingId) {
-
+    	return null;
     }
 }
