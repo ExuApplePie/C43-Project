@@ -26,6 +26,7 @@ public class QueriesController {
                     "INNER JOIN Amenity ON ListingAmenity.amenityId = Amenity.amenityId " +
                     "GROUP BY Listing.listingId, Availability.date";
             stmt.executeUpdate(sql);
+            stmt.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -109,14 +110,16 @@ public class QueriesController {
     private static List<Dates> getDates(String query) {
         try {
             Statement statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery(query);
+            ResultSet resultSet = statement.executeQuery(query);
             List<Dates> dates = new ArrayList<>();
-            while (rs.next()) {
-                Dates temp = DatesController.getDates(rs.getInt(1));
+            while (resultSet.next()) {
+                Dates temp = DatesController.getDates(resultSet.getInt(1));
                 if (temp != null) {
                     dates.add(temp);
                 }
             }
+            resultSet.close();
+            statement.close();
             return dates;
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -17,6 +17,8 @@ public class ListingAmenityController {
             while (resultSet.next()) {
                 listingAmenity = new ListingAmenity(resultSet.getInt(1), resultSet.getInt(2), resultSet.getInt(3));
             }
+            resultSet.close();
+            statement.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

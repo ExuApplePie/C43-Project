@@ -17,6 +17,8 @@ public class BookingController {
             while (resultSet.next()) {
                 booking = new Booking(resultSet.getInt(1), resultSet.getInt(2), resultSet.getInt(3), resultSet.getString(4), resultSet.getString(5), resultSet.getInt(6), resultSet.getString(7), resultSet.getString(8), resultSet.getInt(9));
             }
+            resultSet.close();
+            statement.close();
         } catch (SQLException e) {
             return null;
         }
@@ -31,6 +33,8 @@ public class BookingController {
             if (resultSet.next()) {
                 booking.setBookingId(resultSet.getInt(1));
             }
+            resultSet.close();
+            statement.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -60,6 +64,8 @@ public class BookingController {
             while (resultSet.next()) {
                 booking = new Booking(resultSet.getInt(1), resultSet.getInt(2), resultSet.getInt(3), resultSet.getString(4), resultSet.getString(5), resultSet.getInt(6), resultSet.getString(7), resultSet.getString(8), resultSet.getInt(9));
             }
+            resultSet.close();
+            statement.close();
         } catch (SQLException e) {
             return null;
         }
@@ -73,6 +79,8 @@ public class BookingController {
             while (resultSet.next()) {
                 booking = new Booking(resultSet.getInt(1), resultSet.getInt(2), resultSet.getInt(3), resultSet.getString(4), resultSet.getString(5), resultSet.getInt(6), resultSet.getString(7), resultSet.getString(8), resultSet.getInt(9));
             }
+            resultSet.close();
+            statement.close();
         } catch (SQLException e) {
             return null;
         }

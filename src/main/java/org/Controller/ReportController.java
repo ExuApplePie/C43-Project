@@ -17,6 +17,8 @@ public class ReportController {
             while (resultSet.next()) {
                 return resultSet.getInt(1);
             }
+            resultSet.close();
+            statement.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -30,6 +32,8 @@ public class ReportController {
             while (resultSet.next()) {
                 return resultSet.getInt(1);
             }
+            resultSet.close();
+            statement.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -44,6 +48,8 @@ public class ReportController {
             while (resultSet.next()) {
                 return resultSet.getInt(1);
             }
+            resultSet.close();
+            statement.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -60,6 +66,8 @@ public class ReportController {
             while (resultSet.next()) {
                 hosts.add(new int[]{resultSet.getInt(1), resultSet.getInt(2)});
             }
+            resultSet.close();
+            statement.close();
             return hosts;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -76,6 +84,8 @@ public class ReportController {
             while (resultSet.next()) {
                 hosts.add(new int[]{resultSet.getInt(1), resultSet.getInt(2)});
             }
+            resultSet.close();
+            statement.close();
             return hosts;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -85,7 +95,7 @@ public class ReportController {
     // Returns an array of host IDs who have more than 10% of the total listings in a region
     public static int[] getCommercialHosts(String country, String city) {
         try {
-            String sql = "SELECT hostId, COUNT(*) as num_listings " +
+            String query = "SELECT hostId, COUNT(*) as num_listings " +
                     "FROM listing " +
                     "WHERE city = '" + city + "' AND country = '" + country + "' " +
                     "GROUP BY hostId " +
@@ -94,12 +104,14 @@ public class ReportController {
                     "FROM listing l2 " +
                     "WHERE l2.city = '" + city + "' AND l2.country = '" + country + "'" +
                     ")";
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            int[] hosts = new int[rs.getFetchSize()];
-            for (int i = 0; rs.next(); i++) {
-                hosts[i] = rs.getInt(1);
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            int[] hosts = new int[resultSet.getFetchSize()];
+            for (int i = 0; resultSet.next(); i++) {
+                hosts[i] = resultSet.getInt(1);
             }
+            resultSet.close();
+            statement.close();
             return hosts;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -108,7 +120,7 @@ public class ReportController {
 
     public static int[] getCommercialHosts(String country) {
         try {
-            String sql = "SELECT hostId, COUNT(*) as num_listings " +
+            String query = "SELECT hostId, COUNT(*) as num_listings " +
                     "FROM listing " +
                     "WHERE country = '" + country + "' " +
                     "GROUP BY hostId " +
@@ -117,12 +129,14 @@ public class ReportController {
                     "FROM listing l2 " +
                     "WHERE l2.country = '" + country + "'" +
                     ")";
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            int[] hosts = new int[rs.getFetchSize()];
-            for (int i = 0; rs.next(); i++) {
-                hosts[i] = rs.getInt(1);
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            int[] hosts = new int[resultSet.getFetchSize()];
+            for (int i = 0; resultSet.next(); i++) {
+                hosts[i] = resultSet.getInt(1);
             }
+            resultSet.close();
+            statement.close();
             return hosts;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -145,18 +159,20 @@ public class ReportController {
 
     // first element is the guestId, second element is the number of bookings
     public static List<int[]> getRenterRanking(String startDate, String endDate) {
-        String sql = "SELECT guestId, COUNT(*) as num_bookings " +
+        String query = "SELECT guestId, COUNT(*) as num_bookings " +
                 "FROM booking " +
                 "WHERE startDate BETWEEN '"+ startDate + "' AND '" + endDate + "' " +
                 "GROUP BY guestId " +
                 "ORDER BY num_bookings DESC";
         try {
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
             List<int[]> renters = new ArrayList<>();
-            while (rs.next()) {
-                renters.add(new int[]{rs.getInt(1), rs.getInt(2)});
+            while (resultSet.next()) {
+                renters.add(new int[]{resultSet.getInt(1), resultSet.getInt(2)});
             }
+            resultSet.close();
+            statement.close();
             return renters;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -164,7 +180,7 @@ public class ReportController {
     }
 
     public static List<int[]> getRenterRanking(String startDate, String endDate, String city) {
-        String sql = "SELECT guestId, COUNT(*) as num_bookings " +
+        String query = "SELECT guestId, COUNT(*) as num_bookings " +
                 "FROM booking b, listing l " +
                 "WHERE b.startDate BETWEEN '"+ startDate + "' AND '" + endDate + "' " +
                 "AND b.listingId = l.listingId " +
@@ -173,15 +189,69 @@ public class ReportController {
                 "HAVING num_bookings >= 2 " +
                 "ORDER BY num_bookings DESC";
         try {
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
             List<int[]> renters = new ArrayList<>();
-            while (rs.next()) {
-                renters.add(new int[]{rs.getInt(1), rs.getInt(2)});
+            while (resultSet.next()) {
+                renters.add(new int[]{resultSet.getInt(1), resultSet.getInt(2)});
             }
+            resultSet.close();
+            statement.close();
             return renters;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    // gets the top 3 hosts with the most cancellations
+    public static int[] getMostHostCancellations(String startDate, String endDate) {
+        String query = "SELECT cancelledBy, COUNT(*) as num_cancellations " +
+                "FROM booking " +
+                "WHERE startDate BETWEEN " + startDate + " AND " + endDate + " " +
+                "AND cancelledBy != guestId " +
+                "GROUP BY cancelledBy " +
+                "ORDER BY num_cancellations DESC " +
+                "LIMIT 3";
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            int[] hosts = new int[resultSet.getFetchSize()];
+            for (int i = 0; resultSet.next(); i++) {
+                hosts[i] = resultSet.getInt(1);
+            }
+            resultSet.close();
+            statement.close();
+            return hosts;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // gets the top 3 guests with the most cancellations
+    public static int[] getMostGuestCancellations(String startDate, String endDate) {
+        String query = "SELECT guestId, COUNT(*) as num_cancellations " +
+                "FROM booking " +
+                "WHERE startDate BETWEEN " + startDate + " AND " + endDate + " " +
+                "AND cancelledBy = guestId " +
+                "GROUP BY guestId " +
+                "ORDER BY num_cancellations DESC " +
+                "LIMIT 3";
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            int[] guests = new int[resultSet.getFetchSize()];
+            for (int i = 0; resultSet.next(); i++) {
+                guests[i] = resultSet.getInt(1);
+            }
+            resultSet.close();
+            statement.close();
+            return guests;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String[] getNounPhrases(int listingId) {
+
     }
 }

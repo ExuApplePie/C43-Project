@@ -37,6 +37,8 @@ public class DatesController {
             while (resultSet.next()) {
                 dates = (new Dates(resultSet.getInt(1), resultSet.getInt(2), resultSet.getString(3), resultSet.getFloat(4), resultSet.getFloat(5), resultSet.getString(6), resultSet.getString(7), resultSet.getString(8), resultSet.getString(9), resultSet.getString(10), resultSet.getBoolean(11), resultSet.getInt(12), resultSet.getString(14), resultSet.getString(15)));
             }
+            resultSet.close();
+            statement.close();
             return dates;
         } catch (SQLException e) {
             throw new RuntimeException(e);

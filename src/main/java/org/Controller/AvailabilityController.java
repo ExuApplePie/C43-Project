@@ -16,6 +16,8 @@ public class AvailabilityController {
             while (resultSet.next()) {
                 availability = new Availability(resultSet.getInt(1), resultSet.getString(2), resultSet.getBoolean(3), resultSet.getInt(4));
             }
+            resultSet.close();
+            statement.close();
         } catch (SQLException e) {
             return null;
         }

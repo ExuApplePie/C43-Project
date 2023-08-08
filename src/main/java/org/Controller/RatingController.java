@@ -19,6 +19,8 @@ public class RatingController {
                 rating = new Rating(resultSet.getInt(1), resultSet.getInt(2), resultSet.getInt(3),
                         resultSet.getString(4), resultSet.getString(5));
             }
+            resultSet.close();
+            statement.close();
         } catch (SQLException e) {
             return null;
         }
@@ -43,8 +45,7 @@ public class RatingController {
 
     public static void editRating(Rating rating) {
         try {
-            Statement statement = conn.createStatement();
-            statement.executeUpdate("UPDATE rating SET score = " + rating.getScore() + ", date = '" + rating.getDate() + "', comment = '" + rating.getComment() + "' WHERE renterId = " + rating.getRenterId() + " AND hostId = " + rating.getHostId());
+            conn.createStatement().executeUpdate("UPDATE rating SET score = " + rating.getScore() + ", date = '" + rating.getDate() + "', comment = '" + rating.getComment() + "' WHERE renterId = " + rating.getRenterId() + " AND hostId = " + rating.getHostId());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

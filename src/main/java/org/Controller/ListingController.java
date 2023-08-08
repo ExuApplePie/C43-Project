@@ -18,6 +18,8 @@ public class ListingController {
             while (resultSet.next()) {
                 listing = new Listing(resultSet.getInt(1), resultSet.getInt(2), resultSet.getString(3), resultSet.getFloat(4), resultSet.getFloat(5), resultSet.getString(6), resultSet.getString(7), resultSet.getString(8), resultSet.getString(9));
             }
+            resultSet.close();
+            statement.close();
         } catch (SQLException e) {
             return null;
         }
@@ -32,6 +34,8 @@ public class ListingController {
             if (resultSet.next()) {
                 listing.setListingId(resultSet.getInt(1));
             }
+            resultSet.close();
+            statement.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

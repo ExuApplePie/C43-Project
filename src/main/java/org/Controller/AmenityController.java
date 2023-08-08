@@ -17,6 +17,8 @@ public class AmenityController {
             while (resultSet.next()) {
                 amenity = new Amenity(resultSet.getInt(1), resultSet.getString(2));
             }
+            resultSet.close();
+            statement.close();
         } catch (SQLException e) {
             return null;
         }
@@ -31,6 +33,8 @@ public class AmenityController {
             while (resultSet.next()) {
                 amenity = new Amenity(resultSet.getInt(1), resultSet.getString(2));
             }
+            resultSet.close();
+            statement.close();
         } catch (SQLException e) {
             return null;
         }
@@ -45,6 +49,8 @@ public class AmenityController {
             if (resultSet.next()) {
                 amenity.setAmenityId(resultSet.getInt(1));
             }
+            resultSet.close();
+            statement.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
