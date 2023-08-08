@@ -27,6 +27,7 @@ public class Main {
 	public static void main(String[] args) {
 		JdbcSqlServerConnection.connectToServer();
 		JdbcSqlServerConnection.runSqlScript("src/main/java/org/Controller/initDB.sql");
+		JdbcSqlServerConnection.runSqlScript("src/main/java/org/Controller/testdata.sql");
 		Scanner scanner = new Scanner(System.in);
 		QueriesController.createDatesWithAmenitiesView();
 
@@ -837,14 +838,6 @@ public class Main {
 		System.out.println("Successfully cancelled booking.");
 		return;
 	}
-    
-    static void printDateList(List<Dates> searchListings) {
-    	for (int i = 0 ; i < searchListings.size(); i++) {
-    		Dates listing = searchListings.get(i);
-    		System.out.println("ListingID: " + listing.getListingId() + " | Address: " + listing.getAddress() + " | Price: " + listing.getPrice() + " | Date: " + listing.getDate() + " | Amenities: " + listing.getAmenities() + " | Quantity: " + listing.getQuantities());
-    	}
-    }
-
 
 	public static User entry(Scanner scanner) {
 		int userId = -1;
