@@ -66,19 +66,39 @@ public class Main {
     public static void rate(User user, Scanner scanner) {
     	System.out.println("------Rate-------");
     	System.out.println("Please select an option");
-    	System.out.println("(1) Rate a Host\n(2) Rate a Renter\n(3) Exit");
+    	System.out.println("(1) Rate a Host\n(2) Rate a Renter\n(3) Check My Ratings\n(4) Exit");
     	int choice = scanner.nextInt();
     	if (choice == 1) {
     		Main.rateHost(user, scanner);
     		return;
     	} else if (choice == 2) {
-    		Main.deleteListing(user, scanner);
+    		Main.rateRenter(user, scanner);
     		return;
-    	} else if (choice == 3) {
+    		
+    	} else if (choice == 2) {
+    		Main.checkRating(user, scanner);
+    		return;
+    	} else if (choice == 4) {
     		System.out.println("Returning to menu...");
     		return;
     	}
     	System.out.println("Invalid input, returning to menu...");
+    }
+    
+    public static void checkRating(User user, Scanner scanner) {
+        System.out.println("------Check My Ratings-------");
+        System.out.println("Please enter an option, or enter any other to exit");
+        System.out.println("(1) Guest Ratings\n(2) Host Ratings\n(3) Exit");
+        int choice = scanner.nextInt();
+        
+        if (choice == 1) {
+        	
+        } else if (choice == 2) {
+        	
+        } else {
+        	System.out.println("Exiting...");
+        	return;
+        }
     }
     
     public static void rateHost(User user, Scanner scanner) {
@@ -610,7 +630,7 @@ public class Main {
     }
     
     public static void cancelBooking (User user, Scanner scanner) {
-    	System.out.println("------Find and Book-------");
+    	System.out.println("------Cancel Booking-------");
     	System.out.println("Please enter the bookingId that you would like to cancel: ");
     	int bookingId = scanner.nextInt();
     	Booking booking = BookingController.getBooking(bookingId);
@@ -643,8 +663,10 @@ public class Main {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		user.setGuestCancels(user.getGuestCancels() + 1);
+		UserController.editUser(user);
 		BookingController.deleteBooking(bookingId);
-		System.out.println("Successfully deleted booking.");
+		System.out.println("Successfully cancelled booking.");
 		return;
     }
     
