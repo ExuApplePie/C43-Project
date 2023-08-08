@@ -1,16 +1,16 @@
 INSERT INTO `assignment2`.`user`
 (`userId`, `occupation`, `address`, `DOB`, `SIN`, `name`)
 VALUES
-(NULL, 'Software Engineer', '123 Main St, Toronto, ON', '1990-01-01', '123456789', 'Alice'),
-(NULL, 'Doctor', '456 Elm St, Vancouver, BC', '1985-02-15', '234567890', 'Bob'),
-(NULL, 'Teacher', '789 Pine St, Montreal, QC', '1992-03-31', '345678901', 'Charlie'),
-(NULL, 'Lawyer', '321 Oak St, Calgary, AB', '1988-04-30', '456789012', 'Dave'),
-(NULL, 'Accountant', '654 Maple St, Halifax, NS', '1991-05-31', '567890123', 'Eve'),
-(NULL, 'Nurse', '147 Maple St, Ottawa, ON', '1993-06-30', '678901234', 'Frank'),
-(NULL, 'Journalist', '258 Oak St, Edmonton, AB', '1986-07-31', '789012345', 'Grace'),
-(NULL, 'Architect', '369 Pine St, Winnipeg, MB', '1989-08-31', '890123456', 'Helen'),
-(NULL, 'Dentist', '741 Elm St, Quebec City, QC', '1990-09-30', '901234567', 'Ivan'),
-(NULL, 'Electrician', '852 Main St, Hamilton, ON', '1987-10-31', '012345678', 'Jack');
+(1, 'Software Engineer', '123 Main St, Toronto, ON', '1990-01-01', '123456789', 'Alice'),
+(2, 'Doctor', '456 Elm St, Vancouver, BC', '1985-02-15', '234567890', 'Bob'),
+(3, 'Teacher', '789 Pine St, Montreal, QC', '1992-03-31', '345678901', 'Charlie'),
+(4, 'Lawyer', '321 Oak St, Calgary, AB', '1988-04-30', '456789012', 'Dave'),
+(5, 'Accountant', '654 Maple St, Halifax, NS', '1991-05-31', '567890123', 'Eve'),
+(6, 'Nurse', '147 Maple St, Ottawa, ON', '1993-06-30', '678901234', 'Frank'),
+(7, 'Journalist', '258 Oak St, Edmonton, AB', '1986-07-31', '789012345', 'Grace'),
+(8, 'Architect', '369 Pine St, Winnipeg, MB', '1989-08-31', '890123456', 'Helen'),
+(9, 'Dentist', '741 Elm St, Quebec City, QC', '1990-09-30', '901234567', 'Ivan'),
+(10, 'Electrician', '852 Main St, Hamilton, ON', '1987-10-31', '012345678', 'Jack');
 @@@
 INSERT INTO `assignment2`.`amenity`
 (`amenityId`,
@@ -52,16 +52,16 @@ INSERT INTO `assignment2`.`listing`
  `city`,
  `address`)
 VALUES
-    (NULL, 1, 'Apartment', -79.3832, 43.6532, 'M5H 2N2', 'Canada', 'Toronto', '100 Queen St W'),
-    (NULL, 2, 'House', -79.3832, 43.6532, 'M5H 2N2', 'Canada', 'Toronto', '200 Queen St W'),
-    (NULL, 3, 'Condo', -79.3832, 43.6532, 'M5H 2N2', 'Canada', 'Toronto', '300 Queen St W'),
-    (NULL, 4, 'Townhouse', -79.3832, 43.6532, 'M5H 2N2', 'Canada', 'Toronto', '400 Queen St W'),
-    (NULL, 5, 'Loft', -79.3832, 43.6532, 'M5H 2N2', 'Canada', 'Toronto', '500 Queen St W'),
-    (NULL, 6, 'Villa', -79.3832, 43.6532, 'M5H 2N2', 'Canada', 'Montreal', '600 Rue Sherbrooke Ouest'),
-    (NULL, 7, 'Cottage', -79.3832, 43.6532, 'M5H 2N2', 'Canada', 'Montreal', '700 Rue Sherbrooke Ouest'),
-    (NULL, 8, 'Bungalow', -79.3832, 43.6532, 'M5H 2N2', 'Canada', 'Montreal', '800 Rue Sherbrooke Ouest'),
-    (NULL, 9, 'Chalet', -79.3832 ,43.6532 ,'M5H 3C3','Canada','Montreal','900 Rue Sherbrooke Ouest'),
-    (NULL ,10,'Farm stay' ,-79.3831 ,43.6531 ,'M5H 3C4','Canada','Montreal','1000 Rue Sherbrooke Ouest');
+    (1, 1, 'Apartment', -79.3832, 43.6532, 'M5H 2N2', 'Canada', 'Toronto', '100 Queen St W'),
+    (2, 2, 'House', -79.3832, 43.6532, 'M5H 2N2', 'Canada', 'Toronto', '200 Queen St W'),
+    (3, 3, 'Condo', -79.3832, 43.6532, 'M5H 2N2', 'Canada', 'Toronto', '300 Queen St W'),
+    (4, 4, 'Townhouse', -79.3832, 43.6532, 'M5H 2N2', 'Canada', 'Toronto', '400 Queen St W'),
+    (5, 5, 'Loft', -79.3832, 43.6532, 'M5H 2N2', 'Canada', 'Toronto', '500 Queen St W'),
+    (6, 6, 'Villa', -79.3832, 43.6532, 'M5H 2N2', 'Canada', 'Montreal', '600 Rue Sherbrooke Ouest'),
+    (7, 7, 'Cottage', -79.3832, 43.6532, 'M5H 2N2', 'Canada', 'Montreal', '700 Rue Sherbrooke Ouest'),
+    (8, 8, 'Bungalow', -79.3832, 43.6532, 'M5H 2N2', 'Canada', 'Montreal', '800 Rue Sherbrooke Ouest'),
+    (9, 9, 'Chalet', -79.3832 ,43.6532 ,'M5H 3C3','Canada','Montreal','900 Rue Sherbrooke Ouest'),
+    (10 ,10,'Farm stay' ,-79.3831 ,43.6531 ,'M5H 3C4','Canada','Montreal','1000 Rue Sherbrooke Ouest');
 @@@
 INSERT INTO `assignment2`.`availability`
 (`listingId`,
@@ -111,16 +111,16 @@ INSERT INTO `assignment2`.`booking`
  `creditcard`,
  `cancelledBy`)
 VALUES
-    (NULL, 1, 1, '2023-08-01', '2023-08-05', 5, 'Great stay!', '1234567890123456', -1),
-    (NULL, 2, 2, '2023-08-02', '2023-08-06', 4, 'Nice place', '2345678901234567', -1),
-    (NULL, 3, 3, '2023-08-03', '2023-08-07', 3, 'Okay stay', '3456789012345678', -1),
-    (NULL, 4, 4, '2023-08-04', '2023-08-08', 2, 'Not great', '4567890123456789', -1),
-    (NULL, 5, 5, '2023-08-05', '2023-08-09', 1, 'Terrible!', '5678901234567890', -1),
-    (NULL, 6, 6, '2023-08-06', '2023-08-10', NULL, NULL, '6789012345678901', -1),
-    (NULL, 7, 7, '2023-08-07', '2023-08-11', NULL, NULL, '7890123456789012', -1),
-    (NULL ,8 ,8 ,'2023 -08 -08' ,'2023 -08 -12' ,NULL ,NULL ,'8901234567890123' ,-1 ),
-    (NULL ,9 ,9 ,'2023 -08 -09' ,'2023 -08 -13' ,NULL ,NULL ,'9012345678901234' ,-1 ),
-    (NULL ,10 ,10 ,'2023 -08 -10' ,'2023 -08 -14' ,NULL ,NULL ,'0123456789012345' ,-1 );
+    (1, 1, 1, '2023-08-01', '2023-08-05', 5, 'Great stay!', '1234567890123456', -1),
+    (2, 2, 2, '2023-08-02', '2023-08-06', 4, 'Nice place', '2345678901234567', -1),
+    (3, 3, 3, '2023-08-03', '2023-08-07', 3, 'Okay stay', '3456789012345678', -1),
+    (4, 4, 4, '2023-08-04', '2023-08-08', 2, 'Not great', '4567890123456789', -1),
+    (5, 5, 5, '2023-08-05', '2023-08-09', 1, 'Terrible!', '5678901234567890', -1),
+    (6, 6, 6, '2023-08-06', '2023-08-10', NULL, NULL, '6789012345678901', -1),
+    (7, 7, 7, '2023-08-07', '2023-08-11', NULL, NULL, '7890123456789012', -1),
+    (8 ,8 ,8 ,'2023 -08 -08' ,'2023 -08 -12' ,NULL ,NULL ,'8901234567890123' ,-1 ),
+    (9 ,9 ,9 ,'2023 -08 -09' ,'2023 -08 -13' ,NULL ,NULL ,'9012345678901234' ,-1 ),
+    (10 ,10 ,10 ,'2023 -08 -10' ,'2023 -08 -14' ,NULL ,NULL ,'0123456789012345' ,-1 );
 @@@
 INSERT INTO `assignment2`.`listingamenity`
 (`listingId`,
