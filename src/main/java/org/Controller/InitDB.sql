@@ -11,9 +11,11 @@ CREATE TABLE IF NOT EXISTS `user` (
   `DOB` date NOT NULL,
   `SIN` int NOT NULL,
   `name` varchar(45) NOT NULL,
+  `hostCancels` int NOT NULL DEFAULT '0',
+  `guestCancels` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`userId`),
   UNIQUE KEY `SIN_UNIQUE` (`SIN`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 @@@
 CREATE TABLE IF NOT EXISTS `listing` (
   `listingId` int NOT NULL AUTO_INCREMENT,

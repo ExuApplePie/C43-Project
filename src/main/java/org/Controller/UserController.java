@@ -18,7 +18,7 @@ public class UserController {
             ResultSet resultSet = statement.executeQuery("SELECT * FROM user WHERE userId = " + userId);
             while (resultSet.next()) {
                 user = new User(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
-                        resultSet.getString(4), resultSet.getInt(5), resultSet.getString(6));
+                        resultSet.getString(4), resultSet.getInt(5), resultSet.getString(6), resultSet.getInt(7), resultSet.getInt(8));
             }
         } catch (SQLException e) {
             return null;
@@ -30,7 +30,7 @@ public class UserController {
     	try {
             Statement statement = conn.createStatement(); // ignore might also be suppressing other errors so be careful
             statement.executeUpdate("INSERT IGNORE INTO user VALUES (" + "NULL, '" + user.getOccupation() + "', '" +
-                    user.getAddress() + "', '" + user.getDOB() + "', " + user.getSIN() + ", '" + user.getName() + "')", Statement.RETURN_GENERATED_KEYS);
+                    user.getAddress() + "', '" + user.getDOB() + "', " + user.getSIN() + ", '" + user.getName() + ", '" + user.getHostCancelCount() + ", '" + user.getGuestCancels() + "')", Statement.RETURN_GENERATED_KEYS);
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 user.setUserId(resultSet.getInt(1));
@@ -53,7 +53,7 @@ public class UserController {
         try {
             Statement statement = conn.createStatement();
             statement.executeUpdate("UPDATE user SET occupation = '" + user.getOccupation() + "', address = '" +
-                    user.getAddress() + "', DOB = '" + user.getDOB() + "', SIN = " + user.getSIN() + "', name = '" + user.getName() +" WHERE userId = " + user.getUserId());
+                    user.getAddress() + "', DOB = '" + user.getDOB() + "', SIN = " + user.getSIN() + "', name = '" + user.getName() + "', hostCancels = '" + user.getHostCancelCount() + "', guestCancels = '" + user.getGuestCancels() + " WHERE userId = " + user.getUserId());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

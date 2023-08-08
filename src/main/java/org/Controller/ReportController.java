@@ -238,13 +238,7 @@ public class ReportController {
 
     // gets the top 3 guests with the most cancellations
     public static int[] getMostGuestCancellations(String startDate, String endDate) {
-        String query = "SELECT guestId, COUNT(*) as num_cancellations " +
-                "FROM booking " +
-                "WHERE startDate BETWEEN " + startDate + " AND " + endDate + " " +
-                "AND cancelledBy = guestId " +
-                "GROUP BY guestId " +
-                "ORDER BY num_cancellations DESC " +
-                "LIMIT 3";
+        String query = "SELECT userId FROM user ORDER BY hostCancels DESC LIMIT 3";
         try {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);

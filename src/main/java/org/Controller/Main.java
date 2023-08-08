@@ -636,7 +636,7 @@ public class Main {
 	        	int sin = scanner.nextInt();
 	        	System.out.println("Please enter your name (this will be your display name): ");
 	        	String name = scanner.next();
-	        	User newUser = new User(0, occupation, address, dob, sin, name);
+	        	User newUser = new User(0, occupation, address, dob, sin, name, 0, 0);
 	        	UserController.addUser(newUser);
 	        	System.out.println("Registration Complete! Your UserId is: " + newUser.getUserId());
 	        	System.out.println("Please note your UserId, as it will be required for signing in.");

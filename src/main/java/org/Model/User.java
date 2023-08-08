@@ -1,25 +1,26 @@
 package org.Model;
 
-import java.text.SimpleDateFormat;
 import static org.Model.DateParser.formatDate;
 
 public class User {
     private int userId;
     private String occupation;
     private String address;
-    private SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private String DOB;
     private int SIN;
     private String name;
     // when manually creating a User object, userID is not known yet
-    public User(int userId, String occupation, String address, String DOB, int SIN, String name) {
+    private int hostCancelCount = 0;
+    private int guestCancels = 0;
+    public User(int userId, String occupation, String address, String DOB, int SIN, String name, int hostCancelCount, int guestCancels) {
         this.userId = userId;
         this.occupation = occupation;
         this.address = address;
         this.DOB = formatDate(DOB);
         this.SIN = SIN;
         this.name = name;
+        this.hostCancelCount = hostCancelCount;
+        this.guestCancels = guestCancels;
     }
 
     public int getUserId() {
@@ -66,6 +67,22 @@ public class User {
         this.name = name;
     }
 
+    public int getHostCancelCount() {
+        return hostCancelCount;
+    }
+
+    public void setHostCancelCount(int hostCancelCount) {
+        this.hostCancelCount = hostCancelCount;
+    }
+
+    public int getGuestCancels() {
+        return guestCancels;
+    }
+
+    public void setGuestCancels(int guestCancels) {
+        this.guestCancels = guestCancels;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -75,6 +92,8 @@ public class User {
                 ", DOB='" + DOB + '\'' +
                 ", SIN=" + SIN +
                 ", name='" + name + '\'' +
+                ", hostCancelCount=" + hostCancelCount +
+                ", renterCancelCount=" + guestCancels +
                 '}';
     }
 }
