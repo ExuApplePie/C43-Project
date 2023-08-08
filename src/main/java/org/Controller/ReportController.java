@@ -6,10 +6,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import opennlp.tools.chunker.*;
 import opennlp.tools.postag.*;
@@ -19,7 +16,6 @@ public class ReportController {
     static Connection conn = JdbcSqlServerConnection.conn;
     public static int getTotalListings(String country, String city, String postalCode) {
         try {
-            System.out.println(warnCommercialHost(getCommercialHosts(country, city)));
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM listing WHERE country = '" + country + "' AND city = '" + city + "' AND postalCode = '" + postalCode + "'");
             while (resultSet.next()) {
@@ -34,7 +30,6 @@ public class ReportController {
     }
     public static int getTotalListings(String country, String city) {
         try {
-            System.out.println(warnCommercialHost(getCommercialHosts(country, city)));
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM listing WHERE country = '" + country + "' AND city = '" + city + "'");
             while (resultSet.next()) {
@@ -50,7 +45,6 @@ public class ReportController {
 
     public static int getTotalListings(String country) {
         try {
-            System.out.println(warnCommercialHost(getCommercialHosts(country)));
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM listing WHERE country = '" + country + "'");
             while (resultSet.next()) {
@@ -101,7 +95,7 @@ public class ReportController {
     }
 
     // Returns an array of host IDs who have more than 10% of the total listings in a region
-    public static int[] getCommercialHosts(String country, String city) {
+    public static int[] getCommercialHosts(String country, String city, Scanner scanner) {
         try {
             String query = "SELECT hostId, COUNT(*) as num_listings " +
                     "FROM listing " +
@@ -120,13 +114,28 @@ public class ReportController {
             }
             resultSet.close();
             statement.close();
+            if (hosts.length > 0) {
+                System.out.println("The following hosts have more than 10% of the total listings in their country:");
+                for (int host : hosts) {
+                    System.out.println(host);
+                }
+                System.out.println("Delete these hosts? (y/n)");
+                String input = scanner.nextLine();
+                if (input.equals("y")) {
+                    for (int host : hosts) {
+                        UserController.deleteUser(host);
+                    }
+                }
+            } else {
+                System.out.println("No hosts have more than 10% of the total listings in their country.");
+            }
             return hosts;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static int[] getCommercialHosts(String country) {
+    public static int[] getCommercialHosts(String country, Scanner scanner) {
         try {
             String query = "SELECT hostId, COUNT(*) as num_listings " +
                     "FROM listing " +
@@ -145,23 +154,24 @@ public class ReportController {
             }
             resultSet.close();
             statement.close();
+            if (hosts.length > 0) {
+                System.out.println("The following hosts have more than 10% of the total listings in their country:");
+                for (int host : hosts) {
+                    System.out.println(host);
+                }
+                System.out.println("Delete these hosts? (y/n)");
+                String input = scanner.nextLine();
+                if (input.equals("y")) {
+                    for (int host : hosts) {
+                        UserController.deleteUser(host);
+                    }
+                }
+            } else {
+                System.out.println("No hosts have more than 10% of the total listings in their country.");
+            }
             return hosts;
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    // Still needs to prohibit???
-    public static String warnCommercialHost(int[] hosts) {
-        if (hosts.length > 0) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("The following hosts have more than 10% of the total listings in their region:\n");
-            for (int host : hosts) {
-                sb.append(host).append("\n");
-            }
-            return sb.toString();
-        } else {
-            return "No hosts have more than 10% of the total listings in their region.";
         }
     }
 
